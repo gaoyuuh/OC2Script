@@ -8,13 +8,15 @@
 
 #import "Convert.h"
 #import "MakeDeclare.h"
+
 @implementation Convert
+
 - (NSString *)convert:(ORNode *)node{
     NSString *result = @"";
     if ([node isKindOfClass:[ORDeclareExpression class]]) {
         result = [self convertDeclareExp:(ORDeclareExpression *)node];
     }else if ([node isKindOfClass:[ORAssignExpression class]]) {
-        result = [self convertAssginExp:(ORAssignExpression *)node];
+        result = [self convertAssignExp:(ORAssignExpression *)node];
     }else if ([node isKindOfClass:[ORValueExpression class]]){
         result = [self convertOCValue:(ORValueExpression *)node];
     }else if ([node isKindOfClass:[ORIntegerValue class]]){
@@ -65,13 +67,14 @@
     }
     return result;
 }
+
 - (NSString *)convertOCClass:(ORClass *)occlass{
     NSMutableString *content = [NSMutableString string];
-    [content appendFormat:@"class %@:%@",occlass.className,occlass.superClassName];
+    [content appendFormat:@"class %@: %@",occlass.className,occlass.superClassName];
     if (occlass.protocols.count > 0) {
-        [content appendFormat:@"<%@>",[occlass.protocols componentsJoinedByString:@","]];
+        [content appendFormat:@" <%@>",[occlass.protocols componentsJoinedByString:@", "]];
     }
-    [content appendString:@"{\n"];
+    [content appendString:@" {\n"];
     for (ORPropertyDeclare *prop in occlass.properties) {
         [content appendString:[self convertPropertyDeclare:prop]];
     }
@@ -86,28 +89,37 @@
     NSMutableString *result = [NSMutableString string];
     switch (typeSpecial.type){
         case TypeUChar:
+            [result appendString:@"uchar"]; break;
         case TypeUShort:
+            [result appendString:@"ushort"]; break;
         case TypeUInt:
-        case TypeULong:
-        case TypeULongLong:
             [result appendString:@"uint"]; break;
+        case TypeULong:
+            [result appendString:@"ulong"]; break;
+        case TypeULongLong:
+            [result appendString:@"uint64"]; break;
         case TypeChar:
+            [result appendString:@"char"]; break;
         case TypeShort:
+            [result appendString:@"short"]; break;
         case TypeInt:
-        case TypeLong:
-        case TypeLongLong:
             [result appendString:@"int"]; break;
+        case TypeLong:
+            [result appendString:@"long"]; break;
+        case TypeLongLong:
+            [result appendString:@"int64"]; break;
         case TypeDouble:
-        case TypeFloat:
             [result appendString:@"double"]; break;
+        case TypeFloat:
+            [result appendString:@"float"]; break;
         case TypeVoid:
             [result appendString:@"void"]; break;
         case TypeSEL:
-            [result appendString:@"SEL"]; break;
+            [result appendString:@"var"]; break;
         case TypeClass:
-            [result appendString:@"Class"]; break;
+            [result appendString:@"var"]; break;
         case TypeBOOL:
-            [result appendString:@"BOOL"]; break;
+            [result appendString:@"bool"]; break;
         case TypeId:
             [result appendString:@"id"]; break;
         case TypeObject:
@@ -132,6 +144,7 @@
     return [NSString stringWithFormat:@"@property(%@)%@;\n",[propertyDecl.keywords componentsJoinedByString:@","],[self convertDeclareTypeVarPair:propertyDecl.var]];
     return @"";
 }
+
 - (NSString *)convertMethoDeclare:(ORMethodDeclare *)methodDecl{
     NSString *methodName = @"";
     if (methodDecl.parameterNames.count == 0) {
@@ -148,12 +161,51 @@
     }
     return [NSString stringWithFormat:@"%@(%@)%@",methodDecl.isClassMethod?@"+":@"-",[self convertDeclareTypeVarPair:methodDecl.returnType],methodName];
 }
+
 - (NSString *)convertMethodImp:(ORMethodImplementation *)methodImp{
-    return [NSString stringWithFormat:@"\n%@%@",[self convertMethoDeclare:methodImp.declare],[self convertScopeImp:methodImp.scopeImp]];
+    NSMutableString *result = [NSMutableString string];
+    ORMethodDeclare *declare = methodImp.declare;
+    
+    // 根据是否是类方法添加适当的关键字
+    if (declare.isClassMethod) {
+        [result appendString:@"\nstatic function "];
+    } else {
+        [result appendString:@"\nfunction "];
+    }
+    
+    // 处理方法名：先处理冒号，再连接，确保每个部分后都有下划线
+    NSMutableString *methodName = [NSMutableString string];
+    for (NSString *namePart in declare.methodNames) {
+        if ([namePart hasSuffix:@":"]) {
+            // 移除冒号并添加下划线
+            [methodName appendString:[namePart substringToIndex:namePart.length - 1]];
+        } else {
+            [methodName appendString:namePart];
+        }
+        // 每个方法名后都加下划线，包括最后一个
+        [methodName appendString:@"_"];
+    }
+    
+    [result appendString:methodName];
+    [result appendString:@"("];
+    
+    // 添加参数（不带类型）
+    if (declare.parameterNames.count > 0) {
+        [result appendString:[declare.parameterNames componentsJoinedByString:@", "]];
+    }
+    
+    [result appendString:@") "];
+    
+    // 添加函数体
+    [result appendString:[self convertScopeImp:methodImp.scopeImp]];
+    
+    return result;
 }
+
 - (NSString *)convertFuncDeclare:(ORFuncDeclare *)funcDecl{
     return [NSString stringWithFormat:@"%@%@",[self convertDeclareTypeVarPair:funcDecl.returnType],[self convertVariable:funcDecl.funVar]];;
 }
+
 int indentationCont = 0;
 - (NSString *)convertScopeImp:(ORScopeImp *)imp{
     NSMutableString *content = [NSMutableString string];
@@ -172,20 +224,47 @@ int indentationCont = 0;
     indentationCont--;
     return content;
 }
+
 - (NSString *)convertBlockImp:(ORFunctionImp *)imp{
     NSMutableString *content = [NSMutableString string];
+    
+    // 添加block关键字
+    [content appendString:@"block"];
+    
     if (imp.declare) {
-        if (!imp.declare.isBlockDeclare) {
-            // void x(int y){ }
-            [content appendFormat:@"%@", [self convertFuncDeclare:imp.declare]];
-        }else{
-            // ^void (int x){ }
-            [content appendFormat:@"^%@", [self convertFuncDeclare:imp.declare]];
+        // 添加参数列表，每个参数必须指定类型
+        [content appendString:@" ("];  // 在block关键字和左括号之间添加空格
+        if (imp.declare.funVar && imp.declare.funVar.pairs.count > 0) {
+            NSMutableArray *paramList = [NSMutableArray array];
+            for (ORTypeVarPair *pair in imp.declare.funVar.pairs) {
+                // 获取参数名和类型
+                NSString *paramName = pair.var.varname;
+                NSString *paramType = [self convertTypeSpecial:pair.type];  // 只获取类型名，不包含变量名
+                
+                // 格式化为"类型 参数名"，添加空格
+                [paramList addObject:[NSString stringWithFormat:@"%@ %@", paramType, paramName]];
+            }
+            [content appendString:[paramList componentsJoinedByString:@", "]];
         }
+        [content appendString:@")"];
+        
+        // 添加返回值类型，不能省略
+        NSString *returnType = @"void";
+        if (imp.declare.returnType) {
+            returnType = [self convertTypeSpecial:imp.declare.returnType.type];  // 只获取类型名
+        }
+        [content appendString:returnType];
+    } else {
+        // 如果没有声明信息，提供一个默认的
+        [content appendString:@" ()void"];  // 在block关键字和左括号之间添加空格
     }
+    
+    // 添加函数体
     [content appendString:[self convertScopeImp:imp.scopeImp]];
+    
     return content;
 }
+
 - (NSString *)convertBinaryExp:(ORBinaryExpression *)exp{
     NSString *operator = @"";
     switch (exp.operatorType) {
@@ -246,6 +325,7 @@ int indentationCont = 0;
     }
     return [NSString stringWithFormat:@"%@ %@ %@",[self convert:exp.left],operator,[self convert:exp.right]];
 }
+
 - (NSString *)convertUnaryExp:(ORUnaryExpression *)exp{
     NSString *format = @"%@";
     switch (exp.operatorType) {
@@ -283,6 +363,7 @@ int indentationCont = 0;
     }
     return [NSString stringWithFormat:format,[self convert:exp.value]];
 }
+
 - (NSString *)convertTernaryExp:(ORTernaryExpression *)exp{
     if (exp.values.count == 1) {
         return [NSString stringWithFormat:@"%@ ?: %@",[self convert:exp.expression],[self convert:exp.values.firstObject]];
@@ -290,6 +371,7 @@ int indentationCont = 0;
         return [NSString stringWithFormat:@"%@ ? %@ : %@",[self convert:exp.expression],[self convert:exp.values.firstObject],[self convert:exp.values.lastObject]];
     }
 }
+
 - (NSString *)convertDeclareExp:(ORDeclareExpression *)exp{
     if (exp.expression) {
         return [NSString stringWithFormat:@"%@ = %@",[self convertDeclareTypeVarPair:exp.pair],[self convert:exp.expression]];
@@ -298,22 +380,63 @@ int indentationCont = 0;
     }
     return @"";
 }
-- (NSString *)convertAssginExp:(ORAssignExpression *)exp{
+
+- (NSString *)convertAssignExp:(ORAssignExpression *)exp{
     NSString *operator = @"=";
+    switch (exp.assignType) {
+        case AssignOperatorAssign:
+            operator = @"=";
+            break;
+        case AssignOperatorAssignAnd:
+            operator = @"&=";
+            break;
+        case AssignOperatorAssignOr:
+            operator = @"|=";
+            break;
+        case AssignOperatorAssignXor:
+            operator = @"^=";
+            break;
+        case AssignOperatorAssignAdd:
+            operator = @"+=";
+            break;
+        case AssignOperatorAssignSub:
+            operator = @"-=";
+            break;
+        case AssignOperatorAssignDiv:
+            operator = @"/=";
+            break;
+        case AssignOperatorAssignMuti:
+            operator = @"*=";
+            break;
+        case AssignOperatorAssignMod:
+            operator = @"%=";
+            break;
+        case AssignOperatorAssignShiftLeft:
+            operator = @"<<=";
+            break;
+        case AssignOperatorAssignShiftRight:
+            operator = @">>=";
+            break;
+    }
     return [NSString stringWithFormat:@"%@ %@ %@",[self convert:exp.value],operator,[self convert:exp.expression]];
 }
+
 - (NSString *)convertORIntegerValue:(ORIntegerValue *)value{
     return [NSString stringWithFormat:@"%lld",value.value];
 }
+
 - (NSString *)convertORUIntegerValue:(ORUIntegerValue *)value{
     return [NSString stringWithFormat:@"%llu",value.value];
 }
+
 - (NSString *)convertORDoubleValue:(ORDoubleValue *)value{
     return [NSString stringWithFormat:@"%f",value.value];
 }
+
 - (NSString *)convertORBoolValue:(ORBoolValue *)value{
-    return [NSString stringWithFormat:@"%@",value.value ? @"YES" : @"NO"];
+    return [NSString stringWithFormat:@"%@",value.value ? @"true" : @"false"];
 }
+
 - (NSString *)convertOCValue:(ORValueExpression *)value{
     switch (value.value_type){
         case OCValueSelector:
@@ -363,9 +486,11 @@ int indentationCont = 0;
     }
     return @"";
 }
+
 - (NSString *)convertSubscript:(ORSubscriptExpression *)collection{
     return [NSString stringWithFormat:@"%@[%@]",[self convert:collection.caller],[self convert:collection.keyExp]];
 }
+
 - (NSString *)convertFunCall:(ORCFuncCall *)call{
     // FIX: make.left.equalTo(superview.mas_left) to make.left.equalTo()(superview.mas_left)
     // FIX: x.left(a) to x.left()(a)
@@ -374,6 +499,7 @@ int indentationCont = 0;
     }
     return [NSString stringWithFormat:@"%@(%@)",[self convert:call.caller],[self convertExpressionList:call.expressions]];
 }
+
 - (NSString *)convertOCMethodCall:(ORMethodCall *)call{
     NSMutableString *methodName = [[call.names componentsJoinedByString:@":"] mutableCopy];
     NSString *sel;
@@ -388,31 +514,36 @@ int indentationCont = 0;
     }
     return [NSString stringWithFormat:@"%@%@",[self convert:call.caller],sel];
 }
+
 - (NSString *)convertIfStatement:(ORIfStatement *)statement{
     NSString *content = @"";
     while (statement.last) {
         if (!statement.condition) {
-            content = [NSString stringWithFormat:@"%@else%@",content,[self convertScopeImp:statement.scopeImp]];
+            content = [NSString stringWithFormat:@"%@ else %@",content,[self convertScopeImp:statement.scopeImp]];
         }else{
-            content = [NSString stringWithFormat:@"else if(%@)%@%@",[self convert:statement.condition],[self convertScopeImp:statement.scopeImp],content];
+            content = [NSString stringWithFormat:@" else if (%@)%@%@",[self convert:statement.condition],[self convertScopeImp:statement.scopeImp],content];
         }
         statement = statement.last;
     }
-    content = [NSString stringWithFormat:@"if(%@)%@%@",[self convert:statement.condition],[self convertScopeImp:statement.scopeImp],content];
+    content = [NSString stringWithFormat:@"if (%@) %@%@",[self convert:statement.condition],[self convertScopeImp:statement.scopeImp],content];
     return content;
 }
+
 - (NSString *)convertWhileStatement:(ORWhileStatement *)statement{
     NSMutableString *content = [NSMutableString string];
     [content appendFormat:@"while(%@)",[self convert:statement.condition]];
     [content appendString:[self convertScopeImp:statement.scopeImp]];
     return content;
 }
+
 - (NSString *)convertDoWhileStatement:(ORDoWhileStatement *)statement{
     return [NSString stringWithFormat:@"do%@while(%@)",[self convertScopeImp:statement.scopeImp],[self convert:statement.condition]];
 }
+
 - (NSString *)convertSwitchStatement:(ORSwitchStatement *)statement{
     return [NSString stringWithFormat:@"switch(%@){\n%@}",[self convert:statement.value],[self convertCaseStatements:statement.cases]];
 }
+
 - (NSString *)convertCaseStatements:(NSArray *)cases{
     NSMutableString *content = [NSMutableString string];
     for (ORCaseStatement *statement in cases) {
@@ -424,6 +555,7 @@ int indentationCont = 0;
     }
     return content;
 }
+
 - (NSString *)convertForStatement:(ORForStatement *)statement{
     NSMutableString *content = [@"for (" mutableCopy];
     [content appendFormat:@"%@; ",[self convertExpressionList:statement.varExpressions]];
@@ -432,25 +564,31 @@ int indentationCont = 0;
     [content appendFormat:@"%@",[self convertScopeImp:statement.scopeImp]];
     return content;
 }
+
 - (NSString *)convertForInStatement:(ORForInStatement *)statement{
     return [NSString stringWithFormat:@"for (%@ in %@)%@",[self convertDeclareExp:statement.expression],[self convert:statement.value],[self convertScopeImp:statement.scopeImp]];
 }
+
 - (NSString *)convertReturnStatement:(ORReturnStatement *)statement{
     return [NSString stringWithFormat:@"return %@",[self convert:statement.expression]];
 }
+
 - (NSString *)convertBreakStatement:(ORBreakStatement *) statement{
     return @"break";
 }
+
 - (NSString *)convertContinueStatement:(ORContinueStatement *) statement{
     return @"continue";
 }
-- (NSString * )convertExpressionList:(NSArray *)list{    
+
+- (NSString * )convertExpressionList:(NSArray *)list{
     NSMutableArray *array = [NSMutableArray array];
     for (ORNode * exp in list){
         [array addObject:[self convert:exp]];
     }
     return [array componentsJoinedByString:@","];
 }
+
 - (NSString *)convertVariable:(ORVariable *)var{
     NSMutableString *result = [@"" mutableCopy];
     for (int i = 0; i < var.ptCount; i++) {
@@ -472,17 +610,19 @@ int indentationCont = 0;
     }
     return result;
 }
+
 - (NSString *)convertTypeVarPair:(ORTypeVarPair *)pair{
     NSString *type = pair.type ? [self convertTypeSpecial:pair.type] : @"void ";
     return [NSString stringWithFormat:@"%@%@",type,[self convertVariable:pair.var]];
 }
+
 - (NSString *)convertDeclareTypeVarPair:(ORTypeVarPair *)pair{
     if ([pair.var isKindOfClass:[ORFuncVariable class]]){
         if (pair.var.isBlock){
             if (pair.var.varname == nil) {
-                return @"Block";
+                return @"var";  // 使用var替代Block
             }
-            return [NSString stringWithFormat:@"Block %@", pair.var.varname];
+            return [NSString stringWithFormat:@"var %@", pair.var.varname];  // 使用var替代Block
         }else{
             return [NSString stringWithFormat:@"Point %@", pair.var.varname];
         }
@@ -512,6 +652,7 @@ int indentationCont = 0;
     }
     return [self convertTypeVarPair:pair];
 }
+
 - (NSString *)convertDeclareTypeVarPairs:(NSArray *)list{
     NSMutableArray *array = [NSMutableArray array];
     for (ORTypeVarPair * pair in list){
@@ -519,4 +660,5 @@ int indentationCont = 0;
     }
     return [array componentsJoinedByString:@","];
 }
+
 @end

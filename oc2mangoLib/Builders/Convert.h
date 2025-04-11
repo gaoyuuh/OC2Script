@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSString *)convertMethodImp:(ORMethodImplementation *)methodImp;
 - (NSString *)convertFuncDeclare:(ORFuncDeclare *)funcDecl;
 
-- (NSString *)convertAssginExp:(ORAssignExpression *)exp;
+- (NSString *)convertAssignExp:(ORAssignExpression *)exp;
 - (NSString *)convertOCValue:(ORValueExpression *)value;
 
 - (NSString *)convertIfStatement:(ORIfStatement *)statement;
