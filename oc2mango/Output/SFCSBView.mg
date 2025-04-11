@@ -61,6 +61,17 @@ function setDefaultValues_isText_block_(title, isText, block) {
     });
 }
 static function title_() {
+    int a = 10;
+    if (a == 1) {
+        printf("1");
+    } else if (a == 2) {
+        printf("2");
+    } else if (a == 3) {
+        printf("3");
+    } else {
+        printf("default");
+        printf("end");
+    }
     return "";
 }
 static function title1_(a) {

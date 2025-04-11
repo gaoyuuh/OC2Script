@@ -570,7 +570,61 @@ int indentationCont = 0;
 }
 
 - (NSString *)convertSwitchStatement:(ORSwitchStatement *)statement{
-    return [NSString stringWithFormat:@"switch(%@){\n%@}",[self convert:statement.value],[self convertCaseStatements:statement.cases]];
+    // 不使用switch，改用if-else if-else结构
+    NSMutableString *content = [NSMutableString string];
+    NSString *switchValue = [self convert:statement.value];
+    BOOL isFirstCase = YES;
+    ORCaseStatement *defaultCase = nil;
+    
+    // 先找出default case并处理普通case
+    for (ORCaseStatement *caseStatement in statement.cases) {
+        if (caseStatement.value) {
+            // 普通case，需要移除break语句
+            NSString *caseValue = [self convert:caseStatement.value];
+            
+            // 移除case主体中的break语句
+            ORScopeImp *scopeWithoutBreak = [self removeBreakFromScope:caseStatement.scopeImp];
+            NSString *caseBody = [self convertScopeImp:scopeWithoutBreak];
+            
+            if (isFirstCase) {
+                [content appendFormat:@"if (%@ == %@) %@", switchValue, caseValue, caseBody];
+                isFirstCase = NO;
+            } else {
+                [content appendFormat:@" else if (%@ == %@) %@", switchValue, caseValue, caseBody];
+            }
+        } else {
+            // 保存default case，最后处理
+            defaultCase = caseStatement;
+        }
+    }
+    
+    // 处理default case
+    if (defaultCase) {
+        // 移除default主体中的break语句
+        ORScopeImp *scopeWithoutBreak = [self removeBreakFromScope:defaultCase.scopeImp];
+        NSString *defaultBody = [self convertScopeImp:scopeWithoutBreak];
+        [content appendFormat:@" else %@", defaultBody];
+    }
+    
+    return content;
+}
+
+// 辅助方法：从scope中移除break语句
+- (ORScopeImp *)removeBreakFromScope:(ORScopeImp *)originalScope {
+    if (!originalScope) return nil;
+    
+    // 创建一个新的scope，复制原始scope的所有非break语句
+    ORScopeImp *newScope = [ORScopeImp new];
+    newScope.statements = [NSMutableArray array];
+    
+    for (id statement in originalScope.statements) {
+        // 如果不是break语句，则添加到新scope
+        if (![statement isKindOfClass:[ORBreakStatement class]]) {
+            [newScope.statements addObject:statement];
+        }
+    }
+    
+    return newScope;
 }
 
 - (NSString *)convertCaseStatements:(NSArray *)cases{
