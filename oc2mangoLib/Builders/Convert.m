@@ -70,7 +70,7 @@
 
 - (NSString *)convertOCClass:(ORClass *)occlass{
     NSMutableString *content = [NSMutableString string];
-    [content appendFormat:@"class %@: %@",occlass.className,occlass.superClassName];
+    [content appendFormat:@"class native %@: %@",occlass.className, occlass.superClassName];
     if (occlass.protocols.count > 0) {
         [content appendFormat:@" <%@>",[occlass.protocols componentsJoinedByString:@", "]];
     }
@@ -440,16 +440,15 @@ int indentationCont = 0;
 - (NSString *)convertOCValue:(ORValueExpression *)value{
     switch (value.value_type){
         case OCValueSelector:
-            return [NSString stringWithFormat:@"@selector(%@)",value.value];
+            return [NSString stringWithFormat:@"toselector(\"%@\")", value.value];
         case OCValueVariable:
             return value.value;
         case OCValueSelf:
             return @"self";
         case OCValueSuper:
             return @"super";
-            
         case OCValueString:
-            return [NSString stringWithFormat:@"@\"%@\"",value.value?:@""];
+            return [NSString stringWithFormat:@"\"%@\"",value.value?:@""];
         case OCValueCString:
             return [NSString stringWithFormat:@"\"%@\"",value.value?:@""];
         case OCValueProtocol:
@@ -501,18 +500,48 @@ int indentationCont = 0;
 }
 
 - (NSString *)convertOCMethodCall:(ORMethodCall *)call{
-    NSMutableString *methodName = [[call.names componentsJoinedByString:@":"] mutableCopy];
-    NSString *sel;
+    // 处理方法名：将OC风格的冒号分隔转为下划线分隔
+    NSMutableString *methodName = [NSMutableString string];
+    
     if (call.values.count == 0) {
-        if (call.methodOperator) {
-            sel = [NSString stringWithFormat:@".%@",methodName];
-        }else{
-            sel = [NSString stringWithFormat:@".%@()",methodName];
+        // 无参数方法：直接使用方法名，不加下划线
+        NSString *namePart = call.names.firstObject ?: @"";
+        // 移除尾部冒号(如果有)
+        if ([namePart hasSuffix:@":"]) {
+            namePart = [namePart substringToIndex:namePart.length - 1];
         }
-    }else{
-        sel = [NSString stringWithFormat:@".%@:(%@)",methodName,[self convertExpressionList:call.values]];
+        [methodName appendString:namePart];
+    } else {
+        // 有参数方法：每个参数对应一个方法名部分，每部分后加下划线
+        NSInteger paramCount = MIN(call.names.count, call.values.count);
+        
+        for (NSInteger i = 0; i < paramCount; i++) {
+            NSString *namePart = call.names[i];
+            // 移除冒号
+            if ([namePart hasSuffix:@":"]) {
+                namePart = [namePart substringToIndex:namePart.length - 1];
+            }
+            [methodName appendString:namePart];
+            [methodName appendString:@"_"]; // 每个参数对应一个下划线
+        }
     }
-    return [NSString stringWithFormat:@"%@%@",[self convert:call.caller],sel];
+    
+    // 构建方法调用表达式
+    NSString *methodCallExpression;
+    if (call.values.count == 0) {
+        // 无参数：根据是否是属性操作符决定是否加括号
+        methodCallExpression = call.methodOperator ? 
+            [NSString stringWithFormat:@".%@", methodName] : 
+            [NSString stringWithFormat:@".%@()", methodName];
+    } else {
+        // 有参数：方法名后跟参数列表
+        methodCallExpression = [NSString stringWithFormat:@".%@(%@)", 
+                               methodName, 
+                               [self convertExpressionList:call.values]];
+    }
+    
+    // 组合调用者和方法调用表达式
+    return [NSString stringWithFormat:@"%@%@", [self convert:call.caller], methodCallExpression];
 }
 
 - (NSString *)convertIfStatement:(ORIfStatement *)statement{
@@ -537,7 +566,7 @@ int indentationCont = 0;
 }
 
 - (NSString *)convertDoWhileStatement:(ORDoWhileStatement *)statement{
-    return [NSString stringWithFormat:@"do%@while(%@)",[self convertScopeImp:statement.scopeImp],[self convert:statement.condition]];
+    return [NSString stringWithFormat:@"do%@while(%@);",[self convertScopeImp:statement.scopeImp],[self convert:statement.condition]];
 }
 
 - (NSString *)convertSwitchStatement:(ORSwitchStatement *)statement{
@@ -586,7 +615,7 @@ int indentationCont = 0;
     for (ORNode * exp in list){
         [array addObject:[self convert:exp]];
     }
-    return [array componentsJoinedByString:@","];
+    return [array componentsJoinedByString:@", "];
 }
 
 - (NSString *)convertVariable:(ORVariable *)var{
@@ -618,14 +647,7 @@ int indentationCont = 0;
 
 - (NSString *)convertDeclareTypeVarPair:(ORTypeVarPair *)pair{
     if ([pair.var isKindOfClass:[ORFuncVariable class]]){
-        if (pair.var.isBlock){
-            if (pair.var.varname == nil) {
-                return @"var";  // 使用var替代Block
-            }
-            return [NSString stringWithFormat:@"var %@", pair.var.varname];  // 使用var替代Block
-        }else{
-            return [NSString stringWithFormat:@"Point %@", pair.var.varname];
-        }
+        return [NSString stringWithFormat:@"var %@", pair.var.varname];
     }else{
         switch (pair.type.type){
             case TypeUChar:

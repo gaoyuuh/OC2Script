@@ -19,6 +19,14 @@
     self = [super initWithFrame:frame];
     if (self) {
         [self setDefaultValues];
+        
+        [self setDefaultValues:@"xxx" isText:YES block:nil];
+        
+        [SFCSBView title];
+        [SFCSBView title1:19];
+        
+        int result = [SFCSBView title1:20];
+
     }
     return self;
 }
@@ -48,12 +56,26 @@
         NSLog(@"a == 3");
     }
 
+    while (a < 10) {
+        NSLog(@"a < 10");
+        a++;
+    }
+
+    do {
+        NSLog(@"a < 10");
+        a++;
+    } while (a < 10);
+
     for (int i = 0; i < 10; i++) {
         NSLog(@"%d",i);
         if (i == 0) {
             continue;
         }
     }
+    
+    SEL sel = @selector(clickAction:test:);
+    
+    self.frame = CGRectMake(0, 10, 100, 200);
     
     void (^block)(NSString *) = ^BOOL(NSString *str){
         return YES;
@@ -67,6 +89,10 @@
 
 + (NSString *)title{
     return @"";
+}
+
++ (int)title1:(int)a {
+    return 1;
 }
 
 @end

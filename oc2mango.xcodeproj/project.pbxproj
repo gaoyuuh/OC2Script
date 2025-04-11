@@ -140,6 +140,9 @@
 		32C54D05256B4AAA00D067A2 /* ClassSecretKeyMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ClassSecretKeyMap.h; path = oc2mangoLib/PatchFile/ClassSecretKeyMap.h; sourceTree = SOURCE_ROOT; };
 		6354B701229B894800C0FDED /* ConvertOuput.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ConvertOuput.txt; sourceTree = "<group>"; };
 		639D738322939E89005C6577 /* ExpressionTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpressionTest.swift; sourceTree = "<group>"; };
+		73BF17A32DA8C3F600835AC0 /* SFCSBView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = SFCSBView.m; path = TestFiles/SFCSBView.m; sourceTree = "<group>"; };
+		73BF17A52DA8C40B00835AC0 /* SFCSBView.mg */ = {isa = PBXFileReference; lastKnownFileType = text; name = SFCSBView.mg; path = Output/SFCSBView.mg; sourceTree = "<group>"; };
+		73BF17A62DA8C42C00835AC0 /* SFCSBView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SFCSBView.h; path = TestFiles/SFCSBView.h; sourceTree = "<group>"; };
 		EE147260227F054300566B3F /* ClassDeclareTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassDeclareTest.swift; sourceTree = "<group>"; };
 		EE1C71EE22882DBF0077A71E /* TestSource.imp */ = {isa = PBXFileReference; lastKnownFileType = text; path = TestSource.imp; sourceTree = "<group>"; };
 		EE1C71F32288314C0077A71E /* FileTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTest.swift; sourceTree = "<group>"; };
@@ -327,6 +330,9 @@
 		EE6E6CD1225E488000616C7E /* oc2mango */ = {
 			isa = PBXGroup;
 			children = (
+				73BF17A52DA8C40B00835AC0 /* SFCSBView.mg */,
+				73BF17A62DA8C42C00835AC0 /* SFCSBView.h */,
+				73BF17A32DA8C3F600835AC0 /* SFCSBView.m */,
 				EE6E6CD2225E488000616C7E /* main.m */,
 			);
 			path = oc2mango;
