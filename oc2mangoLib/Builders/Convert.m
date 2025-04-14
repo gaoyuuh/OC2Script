@@ -173,17 +173,38 @@
         [result appendString:@"\nfunction "];
     }
     
-    // 处理方法名：先处理冒号，再连接，确保每个部分后都有下划线
+    // 处理方法名：根据是否有参数决定是否添加下划线
     NSMutableString *methodName = [NSMutableString string];
-    for (NSString *namePart in declare.methodNames) {
-        if ([namePart hasSuffix:@":"]) {
-            // 移除冒号并添加下划线
-            [methodName appendString:[namePart substringToIndex:namePart.length - 1]];
-        } else {
-            [methodName appendString:namePart];
+    
+    // 如果没有参数，直接使用方法名，不添加下划线
+    if (declare.parameterNames.count == 0) {
+        if (declare.methodNames.count > 0) {
+            NSString *namePart = declare.methodNames[0];
+            // 如果有冒号就移除
+            if ([namePart hasSuffix:@":"]) {
+                [methodName appendString:[namePart substringToIndex:namePart.length - 1]];
+            } else {
+                [methodName appendString:namePart];
+            }
         }
-        // 每个方法名后都加下划线，包括最后一个
-        [methodName appendString:@"_"];
+    } else {
+        // 有参数的情况，添加与参数数量匹配的下划线
+        NSInteger paramCount = declare.parameterNames.count;
+        NSInteger nameCount = MIN(declare.methodNames.count, paramCount);
+        
+        for (NSInteger i = 0; i < nameCount; i++) {
+            NSString *namePart = declare.methodNames[i];
+            
+            // 移除冒号
+            if ([namePart hasSuffix:@":"]) {
+                [methodName appendString:[namePart substringToIndex:namePart.length - 1]];
+            } else {
+                [methodName appendString:namePart];
+            }
+            
+            // 添加下划线
+            [methodName appendString:@"_"];
+        }
     }
     
     [result appendString:methodName];
@@ -649,7 +670,50 @@ int indentationCont = 0;
 }
 
 - (NSString *)convertForInStatement:(ORForInStatement *)statement{
-    return [NSString stringWithFormat:@"for (%@ in %@)%@",[self convertDeclareExp:statement.expression],[self convert:statement.value],[self convertScopeImp:statement.scopeImp]];
+    // 将for-in转换为传统for循环
+    
+    // 获取循环变量和集合
+    NSString *itemVar = [self convertDeclareExp:statement.expression];
+    NSString *collection = [self convert:statement.value];
+    
+    // 创建新的循环体，在开头添加元素获取语句
+    ORScopeImp *newScopeImp = [ORScopeImp new];
+    newScopeImp.statements = [NSMutableArray array];
+    
+    // 添加元素获取语句: itemVar = collection[i];
+    ORDeclareExpression *getItemExp = [ORDeclareExpression new];
+    getItemExp.pair = statement.expression.pair;
+    
+    // 创建subscript表达式: collection[i]
+    ORSubscriptExpression *subscriptExp = [ORSubscriptExpression new];
+    
+    // 设置集合
+    ORValueExpression *collectionValue = [ORValueExpression new];
+    collectionValue.value_type = OCValueVariable;
+    collectionValue.value = collection;
+    subscriptExp.caller = collectionValue;
+    
+    // 设置索引
+    ORValueExpression *indexValue = [ORValueExpression new];
+    indexValue.value_type = OCValueVariable;
+    indexValue.value = @"i";
+    subscriptExp.keyExp = indexValue;
+    
+    getItemExp.expression = subscriptExp;
+    
+    // 添加到新循环体
+    [newScopeImp.statements addObject:getItemExp];
+    
+    // 添加原始循环体的所有语句
+    [newScopeImp.statements addObjectsFromArray:statement.scopeImp.statements];
+    
+    // 构建传统for循环结构，使用i = i + 1替代i++
+    NSMutableString *forLoop = [NSMutableString string];
+    [forLoop appendString:@"for (var i = 0; i < "];
+    [forLoop appendFormat:@"%@.count; i = i + 1) ", collection];
+    [forLoop appendString:[self convertScopeImp:newScopeImp]];
+    
+    return forLoop;
 }
 
 - (NSString *)convertReturnStatement:(ORReturnStatement *)statement{

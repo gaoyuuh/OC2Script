@@ -89,6 +89,10 @@
 
 + (NSString *)title{
     
+    NSArray *ary = @[@1, @2, @3];
+    for (NSNumber *item in ary) {
+    }
+    
     int a = 10;
     switch (a) {
         case 1:

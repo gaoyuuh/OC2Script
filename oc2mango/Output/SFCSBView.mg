@@ -60,7 +60,11 @@ function setDefaultValues_isText_block_(title, isText, block) {
         *stop = true;
     });
 }
-static function title_() {
+static function title() {
+    NSArray *ary = @[@(1),@(2),@(3)];
+    for (var i = 0; i < ary.count; i = i + 1) {
+        NSNumber *item = ary[i]
+    }
     int a = 10;
     if (a == 1) {
         printf("1");
