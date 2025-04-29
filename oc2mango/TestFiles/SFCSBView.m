@@ -93,6 +93,8 @@
     for (NSNumber *item in ary) {
     }
     
+    NSDictionary *dic = @{@"key": @"value", @"key1": @"value1"};
+    
     int a = 10;
     switch (a) {
         case 1:
@@ -110,6 +112,8 @@
             printf("end");
             break;
     }
+    
+    NSString *result = a > 5 ? ">" : "<";
     
     return @"";
 }

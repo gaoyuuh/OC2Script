@@ -1,6 +1,4 @@
 class native SFCSBView: UIView {
-@property(nonatomic,strong)NSString *title;
-@property(nonatomic,assign)double cornerRadius;
 
 function initWithFrame_(frame) {
     self = super.initWithFrame_(frame);
@@ -9,14 +7,14 @@ function initWithFrame_(frame) {
         self.setDefaultValues_isText_block_("xxx", true, nil);
         SFCSBView.title();
         SFCSBView.title1_(19);
-        int result = SFCSBView.title1_(20);
+        var result = SFCSBView.title1_(20);
     }
     return self;
 }
 function setDefaultValues_isText_block_(title, isText, block) {
-    int a = 1;
-    int64 b = 2;
-    int64 c = a + b;
+    var a = 1;
+    var b = 2;
+    var c = a + b;
     c += a;
     c -= a;
     c *= a;
@@ -25,7 +23,7 @@ function setDefaultValues_isText_block_(title, isText, block) {
     c &= a;
     c |= a;
     c ^= a;
-    NSString *b = "2";
+    var b = "2";
     NSLog("%d", a);
     NSLog("%@", b);
     self.clipsToBounds = false;
@@ -44,7 +42,7 @@ function setDefaultValues_isText_block_(title, isText, block) {
         NSLog("a < 10");
         a++;
     }while(a < 10);
-    for (int i = 0; i < 10; i++){
+    for (var i = 0; i < 10; i++){
         NSLog("%d", i);
         if (i == 0) {
             continue;
@@ -56,16 +54,17 @@ function setDefaultValues_isText_block_(title, isText, block) {
         return true;
     };
     block("1");
-    @[].enumerateObjectsUsingBlock_(block (NSDictionary  obj, uint64  idx, bool  stop)void {
+    NSArray.array().enumerateObjectsUsingBlock_(block (NSDictionary  obj, uint64  idx, bool  stop)void {
         *stop = true;
     });
 }
 static function title() {
-    NSArray *ary = @[@(1),@(2),@(3)];
+    var ary = NSArray.arrayWithObjects_(1, 2, 3, nil);
     for (var i = 0; i < ary.count; i = i + 1) {
-        NSNumber *item = ary[i]
+        var item = ary[i]
     }
-    int a = 10;
+    var dic = NSDictionary.dictionaryWithObjectsAndKeys_("value", "key", "value1", "key1", nil);
+    var a = 10;
     if (a == 1) {
         printf("1");
     } else if (a == 2) {
@@ -76,6 +75,7 @@ static function title() {
         printf("default");
         printf("end");
     }
+    var result = a > 5 ? ">" : "<";
     return "";
 }
 static function title1_(a) {

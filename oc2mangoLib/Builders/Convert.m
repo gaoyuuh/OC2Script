@@ -75,9 +75,6 @@
         [content appendFormat:@" <%@>",[occlass.protocols componentsJoinedByString:@", "]];
     }
     [content appendString:@" {\n"];
-    for (ORPropertyDeclare *prop in occlass.properties) {
-        [content appendString:[self convertPropertyDeclare:prop]];
-    }
     for (ORMethodImplementation *imp in occlass.methods) {
         [content appendString:[self convertMethodImp:imp]];
     }
@@ -137,12 +134,6 @@
     [result appendString:@" "];
     
     return result;
-}
-
-- (NSString *)convertPropertyDeclare:(ORPropertyDeclare *)propertyDecl{
-    
-    return [NSString stringWithFormat:@"@property(%@)%@;\n",[propertyDecl.keywords componentsJoinedByString:@","],[self convertDeclareTypeVarPair:propertyDecl.var]];
-    return @"";
 }
 
 - (NSString *)convertMethoDeclare:(ORMethodDeclare *)methodDecl{
@@ -386,6 +377,7 @@ int indentationCont = 0;
 }
 
 - (NSString *)convertTernaryExp:(ORTernaryExpression *)exp{
+#warning gaoyu 三目运算符替代方案
     if (exp.values.count == 1) {
         return [NSString stringWithFormat:@"%@ ?: %@",[self convert:exp.expression],[self convert:exp.values.firstObject]];
     }else{
@@ -393,11 +385,13 @@ int indentationCont = 0;
     }
 }
 
-- (NSString *)convertDeclareExp:(ORDeclareExpression *)exp{
+- (NSString *)convertDeclareExp:(ORDeclareExpression *)exp {
+    NSString *varname = exp.pair.var.varname;
     if (exp.expression) {
-        return [NSString stringWithFormat:@"%@ = %@",[self convertDeclareTypeVarPair:exp.pair],[self convert:exp.expression]];
-    }else{
-        return [NSString stringWithFormat:@"%@",[self convertDeclareTypeVarPair:exp.pair]];
+        NSString *str2 = [self convert:exp.expression];
+        return [NSString stringWithFormat:@"var %@ = %@", varname, str2];
+    } else {
+        return [NSString stringWithFormat:@"var %@", varname];
     }
     return @"";
 }
@@ -469,9 +463,9 @@ int indentationCont = 0;
         case OCValueSuper:
             return @"super";
         case OCValueString:
-            return [NSString stringWithFormat:@"\"%@\"",value.value?:@""];
+            return [NSString stringWithFormat:@"\"%@\"",value.value ? value.value : @""];
         case OCValueCString:
-            return [NSString stringWithFormat:@"\"%@\"",value.value?:@""];
+            return [NSString stringWithFormat:@"\"%@\"",value.value ? value.value : @""];
         case OCValueProtocol:
             return [NSString stringWithFormat:@"@protocol(%@)",value.value];
         case OCValueDictionary:
@@ -479,9 +473,11 @@ int indentationCont = 0;
             NSMutableArray <NSMutableArray *>*keyValuePairs = value.value;
             NSMutableArray *pairs = [NSMutableArray array];
             for (NSMutableArray *keyValue in keyValuePairs) {
-                [pairs addObject:[NSString stringWithFormat:@"%@:%@",[self convert:keyValue[0]],[self convert:keyValue[1]]]];
+                NSString *key = [self convert:keyValue[0]];
+                NSString *value = [self convert:keyValue[1]];
+                [pairs addObjectsFromArray:@[value, key]];
             }
-            return [NSString stringWithFormat:@"@{%@}",[pairs componentsJoinedByString:@","]];
+            return [NSString stringWithFormat:@"NSDictionary.dictionaryWithObjectsAndKeys_(%@, nil)", [pairs componentsJoinedByString:@", "]];
         }
         case OCValueArray:{
             NSMutableArray *exps = value.value;
@@ -489,20 +485,24 @@ int indentationCont = 0;
             for (ORNode * exp in exps) {
                 [elements addObject:[self convert:exp]];
             }
-            return [NSString stringWithFormat:@"@[%@]",[elements componentsJoinedByString:@","]];
+            if (elements.count == 0) {
+                return @"NSArray.array()";
+            } else {
+                return [NSString stringWithFormat:@"NSArray.arrayWithObjects_(%@, nil)", [elements componentsJoinedByString:@", "]];
+            }
         }
         case OCValueNSNumber:{
             if ([value.value isKindOfClass:[NSString class]]) {
-                return [NSString stringWithFormat:@"@(%@)",value.value];
+                return [NSString stringWithFormat:@"%@",value.value];
             }
             if ([value.value isKindOfClass:[ORNode class]]) {
-                return [NSString stringWithFormat:@"@(%@)",[self convert:value.value]];
+                return [NSString stringWithFormat:@"%@",[self convert:value.value]];
             }
         }
         case OCValueNil:
             return @"nil";
         case OCValueNULL:
-            return @"NULL";
+            return @"nil";
     }
     return @"";
 }
@@ -526,7 +526,10 @@ int indentationCont = 0;
     
     if (call.values.count == 0) {
         // 无参数方法：直接使用方法名，不加下划线
-        NSString *namePart = call.names.firstObject ?: @"";
+        NSString *namePart = call.names.firstObject;
+        if (namePart == nil) {
+            namePart = @"";
+        }
         // 移除尾部冒号(如果有)
         if ([namePart hasSuffix:@":"]) {
             namePart = [namePart substringToIndex:namePart.length - 1];
@@ -763,7 +766,7 @@ int indentationCont = 0;
     return [NSString stringWithFormat:@"%@%@",type,[self convertVariable:pair.var]];
 }
 
-- (NSString *)convertDeclareTypeVarPair:(ORTypeVarPair *)pair{
+- (NSString *)convertDeclareTypeVarPair:(ORTypeVarPair *)pair {
     if ([pair.var isKindOfClass:[ORFuncVariable class]]){
         return [NSString stringWithFormat:@"var %@", pair.var.varname];
     }else{
