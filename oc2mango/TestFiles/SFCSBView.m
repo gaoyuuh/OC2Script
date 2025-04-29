@@ -77,10 +77,10 @@
     
     self.frame = CGRectMake(0, 10, 100, 200);
     
-    void (^block)(NSString *) = ^BOOL(NSString *str){
+    void (^resultBlock)(NSString *) = ^BOOL(NSString *str){
         return YES;
     };
-    block(@"1");
+    resultBlock(@"1");
 
     [@[] enumerateObjectsUsingBlock:^(NSDictionary * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         *stop = YES;

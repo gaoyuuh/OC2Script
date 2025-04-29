@@ -109,48 +109,25 @@
             [result appendString:@"double"]; break;
         case TypeFloat:
             [result appendString:@"float"]; break;
-        case TypeVoid:
-            [result appendString:@"void"]; break;
-        case TypeSEL:
-            [result appendString:@"var"]; break;
-        case TypeClass:
-            [result appendString:@"var"]; break;
         case TypeBOOL:
             [result appendString:@"bool"]; break;
-        case TypeId:
-            [result appendString:@"id"]; break;
-        case TypeObject:
-            [result appendString:typeSpecial.name]; break;
-        case TypeBlock:
-            [result appendString:@"Block"]; break;
             
+        case TypeVoid:
+        case TypeSEL:
+        case TypeClass:
+        case TypeId:
+        case TypeObject:
+        case TypeBlock:
         case TypeStruct:
-            [result appendString:typeSpecial.name]; break;
-            break;
+            [result appendString:@"object"]; break;
+            
         default:
-            [result appendString:@"UnKnownType"];
+            [result appendString:@"object"];
             break;
     }
     [result appendString:@" "];
     
     return result;
-}
-
-- (NSString *)convertMethoDeclare:(ORMethodDeclare *)methodDecl{
-    NSString *methodName = @"";
-    if (methodDecl.parameterNames.count == 0) {
-        methodName = methodDecl.methodNames.firstObject;
-    }else{
-        NSMutableArray *list = [NSMutableArray array];
-        for (int i = 0; i < methodDecl.parameterNames.count; i++) {
-            [list addObject:[NSString stringWithFormat:@"%@:(%@)%@",
-                             methodDecl.methodNames[i],
-                             [self convertDeclareTypeVarPair:methodDecl.parameterTypes[i]],
-                             methodDecl.parameterNames[i]]];
-        }
-        methodName = [list componentsJoinedByString:@" "];
-    }
-    return [NSString stringWithFormat:@"%@(%@)%@",methodDecl.isClassMethod?@"+":@"-",[self convertDeclareTypeVarPair:methodDecl.returnType],methodName];
 }
 
 - (NSString *)convertMethodImp:(ORMethodImplementation *)methodImp{
@@ -338,21 +315,25 @@ int indentationCont = 0;
     return [NSString stringWithFormat:@"%@ %@ %@",[self convert:exp.left],operator,[self convert:exp.right]];
 }
 
-- (NSString *)convertUnaryExp:(ORUnaryExpression *)exp{
+- (NSString *)convertUnaryExp:(ORUnaryExpression *)exp {
     NSString *format = @"%@";
     switch (exp.operatorType) {
             
         case UnaryOperatorIncrementSuffix:
-            format = @"%@++";
+            // 将 a++ 替换为 a = a + 1
+            format = @"%@ = %@ + 1";
             break;
         case UnaryOperatorDecrementSuffix:
-            format = @"%@--";
+            // 将 a-- 替换为 a = a - 1
+            format = @"%@ = %@ - 1";
             break;
         case UnaryOperatorIncrementPrefix:
-            format = @"++%@";
+            // 将 ++a 替换为 a = a + 1
+            format = @"%@ = %@ + 1";
             break;
         case UnaryOperatorDecrementPrefix:
-            format = @"--%@";
+            // 将 --a 替换为 a = a - 1
+            format = @"%@ = %@ - 1";
             break;
         case UnaryOperatorNot:
             format = @"!%@";
@@ -361,7 +342,7 @@ int indentationCont = 0;
             format = @"-%@";
             break;
         case UnaryOperatorBiteNot:
-            format = @"-%@";
+            format = @"~%@";
             break;
         case UnaryOperatorSizeOf:
             format = @"~%@";
@@ -373,7 +354,16 @@ int indentationCont = 0;
             format = @"*%@";
             break;
     }
-    return [NSString stringWithFormat:format,[self convert:exp.value]];
+    // 对于自增自减操作，需要重复使用表达式值
+    if (exp.operatorType == UnaryOperatorIncrementSuffix || 
+        exp.operatorType == UnaryOperatorDecrementSuffix ||
+        exp.operatorType == UnaryOperatorIncrementPrefix ||
+        exp.operatorType == UnaryOperatorDecrementPrefix) {
+        NSString *valueStr = [self convert:exp.value];
+        return [NSString stringWithFormat:format, valueStr, valueStr];
+    }
+    
+    return [NSString stringWithFormat:format, [self convert:exp.value]];
 }
 
 - (NSString *)convertTernaryExp:(ORTernaryExpression *)exp{

@@ -36,13 +36,13 @@ function setDefaultValues_isText_block_(title, isText, block) {
     }
     while(a < 10){
         NSLog("a < 10");
-        a++;
+        a = a + 1;
     }
     do{
         NSLog("a < 10");
-        a++;
+        a = a + 1;
     }while(a < 10);
-    for (var i = 0; i < 10; i++){
+    for (var i = 0; i < 10; i = i + 1){
         NSLog("%d", i);
         if (i == 0) {
             continue;
@@ -50,11 +50,11 @@ function setDefaultValues_isText_block_(title, isText, block) {
     }
     var sel = toselector("clickAction:test:");
     self.frame = CGRectMake(0, 10, 100, 200);
-    var block = block (NSString  str)bool {
+    var resultBlock = block (object  str)bool {
         return true;
     };
-    block("1");
-    NSArray.array().enumerateObjectsUsingBlock_(block (NSDictionary  obj, uint64  idx, bool  stop)void {
+    resultBlock("1");
+    NSArray.array().enumerateObjectsUsingBlock_(block (object  obj, uint64  idx, bool  stop)object {
         *stop = true;
     });
 }
