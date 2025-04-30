@@ -1,5 +1,16 @@
 class native SFCSBView: UIView {
 
+function test() {
+    var dic = NSDictionary.dictionaryWithObjectsAndKeys_("value", "key", "value1", "key1", nil);
+    var value = dic.objectForKey_("key");
+    var temp = "key1";
+    var value1 = dic.objectForKey_(temp);
+    var ary = NSArray.arrayWithObjects_(1, 2, 3, nil);
+    var number = ary.objectAtIndex_(0);
+    var index = 1;
+    var number1 = ary.objectAtIndex_(index);
+    NSLog("%@ %@ %@ %@", value, value1, number, number1);
+}
 function initWithFrame_(frame) {
     self = super.initWithFrame_(frame);
     if (self) {
@@ -24,7 +35,7 @@ function setDefaultValues_isText_block_(title, isText, block) {
     c |= a;
     c ^= a;
     var b = "2";
-    NSLog("%d", a);
+    NSLog("%@", a);
     NSLog("%@", b);
     self.clipsToBounds = false;
     if (a == 1) {
@@ -43,7 +54,7 @@ function setDefaultValues_isText_block_(title, isText, block) {
         a = a + 1;
     }while(a < 10);
     for (var i = 0; i < 10; i = i + 1){
-        NSLog("%d", i);
+        NSLog("%@", i);
         if (i == 0) {
             continue;
         }
@@ -61,9 +72,13 @@ function setDefaultValues_isText_block_(title, isText, block) {
 static function title() {
     var ary = NSArray.arrayWithObjects_(1, 2, 3, nil);
     for (var i = 0; i < ary.count; i = i + 1) {
-        var item = ary[i]
+        var item = ary.objectAtIndex_(i)
     }
+    var number = ary.objectAtIndex_(1);
     var dic = NSDictionary.dictionaryWithObjectsAndKeys_("value", "key", "value1", "key1", nil);
+    var value = dic.objectForKey_("key");
+    var key1 = "key1";
+    var value1 = dic.objectForKey_(key1);
     var a = 10;
     if (a == 1) {
         printf("1");

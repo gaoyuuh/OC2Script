@@ -129,7 +129,9 @@ int main(int argc, const char * argv[]) {
     [result.classCache enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, ORClass* class, BOOL * _Nonnull stop) {
         NSString *filename = [NSString stringWithFormat:@"%@.mg",key];
         NSString *filepath = [outputDir stringByAppendingPathComponent:filename];
-        [[convert convert:class] writeToFile:filepath atomically:YES encoding:NSUTF8StringEncoding error:&error];
+        NSString *script = [convert convert:class];
+        NSLog(@"\n==================\n%@\n==================\n", script);
+        [script writeToFile:filepath atomically:YES encoding:NSUTF8StringEncoding error:&error];
         if (error) {
             NSLog(@"oc2mango: %@ - error: %@",filepath, error.localizedDescription);
         }

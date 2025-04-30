@@ -14,6 +14,20 @@
 
 @implementation SFCSBView
 
+- (void)test {
+    NSDictionary *dic = @{@"key": @"value", @"key1": @"value1"};
+    NSString *value = dic[@"key"];
+    NSString *temp = @"key1";
+    NSString *value1 = dic[temp];
+    
+    NSArray *ary = @[@1, @2, @3];
+    id number = ary[0];
+    int index = 1;
+    id number1 = ary[index];
+    
+    NSLog(@"%@ %@ %@ %@", value, value1, number, number1);
+}
+
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -93,7 +107,13 @@
     for (NSNumber *item in ary) {
     }
     
+    id number = ary[1];
+        
     NSDictionary *dic = @{@"key": @"value", @"key1": @"value1"};
+    
+    id value = dic[@"key"];
+    NSString *key1 = @"key1";
+    id value1 = dic[key1];
     
     int a = 10;
     switch (a) {

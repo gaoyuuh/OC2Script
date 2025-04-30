@@ -10,22 +10,8 @@
 #import "MakeDeclare.h"
 NS_ASSUME_NONNULL_BEGIN
 @interface Convert : NSObject
+
 - (NSString *)convert:(id)node;
-- (NSString *)convertOCClass:(ORClass *)occlass;
 
-- (NSString *)convertTypeSpecial:(ORTypeSpecial *)type;
-- (NSString *)convertPropertyDeclare:(ORPropertyDeclare *)propertyDecl;
-- (NSString *)convertMethodImp:(ORMethodImplementation *)methodImp;
-- (NSString *)convertFuncDeclare:(ORFuncDeclare *)funcDecl;
-
-- (NSString *)convertAssignExp:(ORAssignExpression *)exp;
-- (NSString *)convertOCValue:(ORValueExpression *)value;
-
-- (NSString *)convertIfStatement:(ORIfStatement *)statement;
-- (NSString *)convertWhileStatement:(ORWhileStatement *)statement;
-- (NSString *)convertDoWhileStatement:(ORDoWhileStatement *)statement;
-- (NSString *)convertSwitchStatement:(ORSwitchStatement *)statement;
-- (NSString *)convertForStatement:(ORForStatement *)statement;
-- (NSString *)convertForInStatement:(ORForInStatement *)statement;
 @end
 NS_ASSUME_NONNULL_END
