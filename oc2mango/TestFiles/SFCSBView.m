@@ -14,6 +14,16 @@
 
 @implementation SFCSBView
 
+- (void)testBlock:(int)a b:(NSString *)b {
+    
+    NSString *a = @"";
+    
+    void(^callBack)(int type, NSString *str) = ^(int type, NSString *str) {
+        
+    };
+    callBack();
+}
+
 - (void)test {
     NSDictionary *dic = @{@"key": @"value", @"key1": @"value1"};
     NSString *value = dic[@"key"];
@@ -24,6 +34,10 @@
     id number = ary[0];
     int index = 1;
     id number1 = ary[index];
+    
+    id sel = @selector(bz_flexCellWithTableView:);
+    
+    id pro = @protocol(BHKitRouterProtocol);
     
     NSLog(@"%@ %@ %@ %@", value, value1, number, number1);
 }

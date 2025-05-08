@@ -1,5 +1,11 @@
 class native SFCSBView: UIView {
 
+function testBlock_b_(a, b) {
+    var a = "";
+    var callBack = block (int  type, object  str) void {
+    };
+    callBack();
+}
 function test() {
     var dic = NSDictionary.dictionaryWithObjectsAndKeys_("value", "key", "value1", "key1", nil);
     var value = dic.objectForKey_("key");
@@ -9,6 +15,8 @@ function test() {
     var number = ary.objectAtIndex_(0);
     var index = 1;
     var number1 = ary.objectAtIndex_(index);
+    var sel = toselector("bz_flexCellWithTableView:");
+    var pro = toProtocol("BHKitRouterProtocol");
     NSLog("%@ %@ %@ %@", value, value1, number, number1);
 }
 function initWithFrame_(frame) {
@@ -61,11 +69,11 @@ function setDefaultValues_isText_block_(title, isText, block) {
     }
     var sel = toselector("clickAction:test:");
     self.frame = CGRectMake(0, 10, 100, 200);
-    var resultBlock = block (object  str)bool {
+    var resultBlock = block (object  str) bool {
         return true;
     };
     resultBlock("1");
-    NSArray.array().enumerateObjectsUsingBlock_(block (object  obj, uint64  idx, bool  stop)object {
+    NSArray.array().enumerateObjectsUsingBlock_(block (object  obj, uint64  idx, bool  stop) void {
         *stop = true;
     });
 }

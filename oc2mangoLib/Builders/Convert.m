@@ -133,6 +133,7 @@
 }
 
 - (NSString *)convertTypeSpecial:(ORTypeSpecial *)typeSpecial{
+    if (!typeSpecial) return @" ";
     NSMutableString *result = [NSMutableString string];
     switch (typeSpecial.type){
         case TypeUChar:
@@ -169,10 +170,11 @@
         case TypeObject:
         case TypeBlock:
         case TypeStruct:
+        case TypeUnKnown:
             [result appendString:@"object"]; break;
             
         default:
-            [result appendString:@"object"];
+            [result appendString:@""];
             break;
     }
     [result appendString:@" "];
@@ -241,10 +243,6 @@
     return result;
 }
 
-- (NSString *)convertFuncDeclare:(ORFuncDeclare *)funcDecl{
-    return [NSString stringWithFormat:@"%@%@",[self convertDeclareTypeVarPair:funcDecl.returnType],[self convertVariable:funcDecl.funVar]];;
-}
-
 int indentationCont = 0;
 - (NSString *)convertScopeImp:(ORScopeImp *)imp{
     NSMutableString *content = [NSMutableString string];
@@ -264,7 +262,7 @@ int indentationCont = 0;
     return content;
 }
 
-- (NSString *)convertBlockImp:(ORFunctionImp *)imp{
+- (NSString *)convertBlockImp:(ORFunctionImp *)imp {
     NSMutableString *content = [NSMutableString string];
     
     // 添加block关键字
@@ -285,17 +283,17 @@ int indentationCont = 0;
             }
             [content appendString:[paramList componentsJoinedByString:@", "]];
         }
-        [content appendString:@")"];
+        [content appendString:@") "];
         
         // 添加返回值类型，不能省略
-        NSString *returnType = @"void";
-        if (imp.declare.returnType) {
+        NSString *returnType = @"void ";
+        if (imp.declare.returnType.type) {
             returnType = [self convertTypeSpecial:imp.declare.returnType.type];  // 只获取类型名
         }
         [content appendString:returnType];
     } else {
         // 如果没有声明信息，提供一个默认的
-        [content appendString:@" ()void"];  // 在block关键字和左括号之间添加空格
+        [content appendString:@" () void "];  // 在block关键字和左括号之间添加空格
     }
     
     // 添加函数体
@@ -517,7 +515,7 @@ int indentationCont = 0;
         case OCValueCString:
             return [NSString stringWithFormat:@"\"%@\"",value.value ? value.value : @""];
         case OCValueProtocol:
-            return [NSString stringWithFormat:@"@protocol(%@)",value.value];
+            return [NSString stringWithFormat:@"toProtocol(\"%@\")",value.value];
         case OCValueDictionary:
         {
             NSMutableArray <NSMutableArray *>*keyValuePairs = value.value;
