@@ -12,7 +12,7 @@
 @interface Convert ()
 
 // 符号表：保存变量名及其类型
-@property (nonatomic, strong) NSMutableDictionary<NSString *, NSString *> *symbolTable;
+@property (nonatomic, strong) NSMutableDictionary<NSString *, ORTypeSpecial *> *symbolTable;
 
 @end
 
@@ -429,67 +429,13 @@ int indentationCont = 0;
     NSString *varname = exp.pair.var.varname;
     
     // 确定变量类型并记录到符号表中
-    NSString *typeName = @"unknown";
+    ORTypeSpecial *typeSpecial = nil;
     if (exp.pair.type) {
-        // 从类型信息中提取类型名称
-        switch (exp.pair.type.type) {
-            case TypeId:
-            case TypeObject:
-                // 如果类型名不为空，记录具体的类名
-                if (exp.pair.type.name.length > 0) {
-                    typeName = exp.pair.type.name;
-                } else {
-                    typeName = @"object";
-                }
-                break;
-            case TypeClass:
-                typeName = @"Class";
-                break;
-            case TypeSEL:
-                typeName = @"SEL";
-                break;
-            case TypeInt:
-            case TypeLong:
-            case TypeLongLong:
-                typeName = @"number";
-                break;
-            case TypeFloat:
-            case TypeDouble:
-                typeName = @"number";
-                break;
-            case TypeBOOL:
-                typeName = @"boolean";
-                break;
-            default:
-                typeName = @"unknown";
-                break;
-        }
-    } else if (exp.expression) {
-        // 尝试从初始化表达式推断类型
-        if ([exp.expression isKindOfClass:[ORValueExpression class]]) {
-            ORValueExpression *valueExp = (ORValueExpression *)exp.expression;
-            switch (valueExp.value_type) {
-                case OCValueArray:
-                    typeName = @"NSArray";
-                    break;
-                case OCValueDictionary:
-                    typeName = @"NSDictionary";
-                    break;
-                case OCValueString:
-                    typeName = @"NSString";
-                    break;
-                case OCValueNSNumber:
-                    typeName = @"NSNumber";
-                    break;
-                default:
-                    break;
-            }
-        }
+        typeSpecial = exp.pair.type;
     }
-    
     // 将变量名和类型存入符号表
     if (varname) {
-        _symbolTable[varname] = typeName;
+        _symbolTable[varname] = typeSpecial;
     }
     
     if (exp.expression) {
@@ -505,18 +451,6 @@ int indentationCont = 0;
     switch (exp.assignType) {
         case AssignOperatorAssign:
             operator = @"=";
-            // 如果是简单赋值，尝试更新符号表中的类型信息
-            if (exp.assignType == AssignOperatorAssign && 
-                [exp.value isKindOfClass:[ORValueExpression class]]) {
-                ORValueExpression *valueExp = (ORValueExpression *)exp.value;
-                if (valueExp.value_type == OCValueVariable) {
-                    NSString *varName = valueExp.value;
-                    NSString *rightType = [self getExpressionType:exp.expression];
-                    if (![rightType isEqualToString:@"unknown"]) {
-                        _symbolTable[varName] = rightType;
-                    }
-                }
-            }
             break;
         case AssignOperatorAssignAnd:
             operator = @"&=";
@@ -624,8 +558,8 @@ int indentationCont = 0;
 }
 
 // 辅助方法：尝试获取表达式的类型
-- (NSString *)getExpressionType:(ORNode *)expression {
-    NSString *type = @"unknown";
+- (ORTypeSpecial *)getExpressionType:(ORNode *)expression {
+    ORTypeSpecial *type = nil;
     
     // 处理简单变量引用
     if ([expression isKindOfClass:[ORValueExpression class]]) {
@@ -633,42 +567,24 @@ int indentationCont = 0;
         switch (valueExp.value_type) {
             case OCValueVariable:
                 // 在符号表中查找变量类型
-                type = _symbolTable[valueExp.value] ?: @"unknown";
-                break;
-                
-            case OCValueArray:
-                type = @"NSArray";
-                break;
-                
-            case OCValueDictionary:
-                type = @"NSDictionary";
-                break;
-                
-            case OCValueString:
-                type = @"NSString";
+                type = _symbolTable[valueExp.value];
                 break;
                 
             default:
                 break;
         }
     }
-    // 处理方法调用返回值
-    else if ([expression isKindOfClass:[ORMethodCall class]]) {
-        ORMethodCall *methodCall = (ORMethodCall *)expression;
-        // 根据方法名尝试推断返回类型
-        NSString *methodName = methodCall.names.firstObject ?: @"";
-        if ([methodName hasPrefix:@"array"] || 
-            [methodName hasSuffix:@"Array"] || 
-            [methodName hasSuffix:@"List"]) {
-            type = @"NSArray";
-        } else if ([methodName hasPrefix:@"dictionary"] || 
-                   [methodName hasSuffix:@"Dictionary"] || 
-                   [methodName hasSuffix:@"Map"]) {
-            type = @"NSDictionary";
-        }
-    }
-    
     return type;
+}
+
+// 辅助方法：判断类型名称是否属于数组类型
+- (BOOL)isArrayType:(NSString *)typeName {
+    return [typeName isEqualToString:@"NSArray"] || [typeName isEqualToString:@"NSMutableArray"];
+}
+
+// 辅助方法：判断类型名称是否属于字典类型
+- (BOOL)isDictionaryType:(NSString *)typeName {
+    return [typeName isEqualToString:@"NSDictionary"] || [typeName isEqualToString:@"NSMutableDictionary"];
 }
 
 - (NSString *)convertSubscript:(ORSubscriptExpression *)collection {
@@ -677,13 +593,14 @@ int indentationCont = 0;
     NSString *key = [self convert:collection.keyExp];
     
     // 尝试确定调用者类型
-    NSString *type = [self getExpressionType:collection.caller];
+    ORTypeSpecial *type = [self getExpressionType:collection.caller];
+    NSString *typeName = type.name;
     
     // 根据类型选择适当的取值方法
-    if ([type isEqualToString:@"NSArray"]) {
+    if ([self isArrayType:typeName]) {
         // 数组使用objectAtIndex_方法
         return [NSString stringWithFormat:@"%@.objectAtIndex_(%@)", caller, key];
-    } else if ([type isEqualToString:@"NSDictionary"]) {
+    } else if ([self isDictionaryType:typeName]) {
         // 字典使用objectForKey_方法
         return [NSString stringWithFormat:@"%@.objectForKey_(%@)", caller, key];
     } else {
@@ -746,28 +663,7 @@ int indentationCont = 0;
     }
     
     // 组合调用者和方法调用表达式
-    NSString *result = [NSString stringWithFormat:@"%@%@", [self convert:call.caller], methodCallExpression];
-    
-    // 尝试记录一些常见方法的返回类型
-    NSString *fullMethodName = methodName;
-    if ([methodName isEqualToString:@"objectForKey"] || 
-        [methodName isEqualToString:@"objectForKey_"]) {
-        // 字典查询方法的返回类型难以确定，默认为object
-        // 可以在这里进行更复杂的推断
-    } else if ([methodName isEqualToString:@"objectAtIndex"] || 
-               [methodName isEqualToString:@"objectAtIndex_"]) {
-        // 数组查询方法的返回类型难以确定，默认为object
-        // 可以在这里进行更复杂的推断
-    } else if ([methodName hasPrefix:@"array"] || 
-               [methodName hasSuffix:@"Array"]) {
-        // 标记该方法调用返回数组类型
-        // 在符号表中可以添加临时变量名，如果有必要的话
-    } else if ([methodName hasPrefix:@"dictionary"] || 
-               [methodName hasSuffix:@"Dictionary"]) {
-        // 标记该方法调用返回字典类型
-    }
-    
-    return result;
+    return [NSString stringWithFormat:@"%@%@", [self convert:call.caller], methodCallExpression];
 }
 
 - (NSString *)convertIfStatement:(ORIfStatement *)statement{
