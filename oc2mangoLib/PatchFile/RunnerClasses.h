@@ -18,6 +18,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign)BOOL withSemicolon;
 @end
 
+// MARK: - Comment
+@interface ORComment : ORNode
+@property (nonatomic, copy) NSString *content;
+@property (nonatomic, assign) BOOL isBlockComment; // YES for /* */, NO for //
+@end
+
 // MARK: - Base
 typedef enum: uint32_t{
     TypeVoid = 0x00,

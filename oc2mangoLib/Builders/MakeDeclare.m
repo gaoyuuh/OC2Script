@@ -189,6 +189,13 @@ OREnumExpressoin *makeEnumExp(NSString *name, ORTypeSpecial *type, NSMutableArra
     return exp;
 }
 
+ORComment *makeComment(NSString *content, BOOL isBlockComment){
+    ORComment *comment = [ORComment new];
+    comment.content = content;
+    comment.isBlockComment = isBlockComment;
+    return comment;
+}
+
 ORNode *makeIntegerValue(uint64_t value){
     if (value <= INT64_MAX) {
         ORIntegerValue *ivalue = [ORIntegerValue new];

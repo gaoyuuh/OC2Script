@@ -1,5 +1,22 @@
 class native SFCSBView: UIView {
 
+function testTernaryExp() {
+    // 注释
+    NSLog("111");
+    /// Jflsjd
+    // 注释就分手了都放假了时代峻峰烦死了
+    // 都放假了顺丰吉林省的减肥螺蛳粉
+    var a = 10;
+    /* fasdf 见风使舵假粉丝
+     多行注释
+     fjsldfj
+    */
+    var result = a > 10 ? "a>10" : "a<=10";
+    NSLog("%@", result);
+    /* zhus*/
+    self.testBlock_b_(1, "1");
+    // 注释
+}
 function testBlock_b_(a, b) {
     var a = "";
     var callBack = block (int  type, object  str) void {

@@ -56,6 +56,8 @@ extern ORNode *makeNegativeIntegerValue(int64_t value);
 extern ORDoubleValue *makeDoubleValue(double value);
 extern ORBoolValue *makeBoolValue(BOOL value);
 
+extern ORComment *makeComment(NSString *content, BOOL isBlockComment);
+
 void startStringBuffer(void);
 char *endStringBuffer(void);
 void stringBufferAppendCharacter(char chr);

@@ -1,0 +1,2 @@
+Target dependency graph (1 target)
+Target 'oc2mango' in project 'oc2mango' (no dependencies)

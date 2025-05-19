@@ -76,6 +76,8 @@
         result = [self convertForInStatement:(ORForInStatement *) node];
     }else if ([node isKindOfClass:[ORClass class]]) {
         result = [self convertOCClass:(ORClass *)node];
+    } else if ([node isKindOfClass:[ORComment class]]) {
+        result = [self convertComment:(ORComment *)node];
     }
     if (node.withSemicolon == YES) {
         result = [result stringByAppendingString:@";"];
@@ -833,6 +835,32 @@ int indentationCont = 0;
         [array addObject:[self convert:exp]];
     }
     return [array componentsJoinedByString:@", "];
+}
+
+- (NSString *)convertComment:(ORComment *)comment {
+    if (comment.content) {
+        // 处理行注释
+        if (!comment.isBlockComment || [comment.content hasPrefix:@"//"]) {
+            if ([comment.content hasPrefix:@"//"]) {
+                return comment.content;
+            } else {
+                // 确保开头有两个斜杠和一个空格
+                return [NSString stringWithFormat:@"// %@", comment.content];
+            }
+        }
+        
+        // 处理块注释 - 简化逻辑
+        NSString *cleanContent = comment.content;
+        
+        // 如果内容已经包含注释标记，直接返回
+        if ([cleanContent hasPrefix:@"/*"] && [cleanContent hasSuffix:@"*/"]) {
+            return cleanContent;
+        }
+        
+        // 否则简单添加注释标记，确保有空格
+        return [NSString stringWithFormat:@"/* %@ */", cleanContent];
+    }
+    return @"";
 }
 
 @end

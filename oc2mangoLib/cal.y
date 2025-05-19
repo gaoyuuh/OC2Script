@@ -39,6 +39,7 @@ SHIFTLEFT SHIFTRIGHT MOD ASSIGN MOD_ASSIGN
 %token <identifier> _self _super _nil _NULL _YES _NO 
 %token <identifier>  _Class _id _void _BOOL _SEL _CHAR _SHORT _INT _LONG _LLONG  _UCHAR _USHORT _UINT _ULONG  _ULLONG _DOUBLE _FLOAT _instancetype
 %token <identifier> INTETER_LITERAL DOUBLE_LITERAL SELECTOR
+%token <identifier> COMMENT_BLOCK COMMENT_LINE
 %type  <identifier> global_define 
 %type  <declare>  protocol_declare class_declare property_list class_private_varibale_declare class_private_list
 %type  <declare>  class_property_declare method_declare declare_left_attribute class_property_type
@@ -52,6 +53,7 @@ SHIFTLEFT SHIFTRIGHT MOD ASSIGN MOD_ASSIGN
 %type <IntValue> pointer pointer_optional
 %type <declaration_modifier> declaration_modifier
 %type <expression> union_declare struct_declare struct_field_list enum_declare enum_field_list typedef_declare
+%type  <identifier> comment_statement
 %%
 
 compile_util: /*empty*/
@@ -69,7 +71,23 @@ definition:
             {
                 [GlobalAst addGlobalStatements:_typeId $1];
             }
+            | comment_statement
+            {
+                [GlobalAst addGlobalStatements:_typeId $1];
+            }
 	    ;
+
+comment_statement:
+            COMMENT_BLOCK
+            {
+                $$ = _vretained makeComment(_typeId $1, YES);
+            }
+            | COMMENT_LINE
+            {
+                $$ = _vretained makeComment(_typeId $1, NO);
+            }
+            ;
+            
 global_define:
     expression_statement
     {
@@ -316,6 +334,14 @@ class_implementation:
                 ORMethodImplementation *imp = makeMethodImplementation(_transfer(ORMethodDeclare *) $2, _transfer(ORScopeImp *) $4);
                 ORClass *occlass = _transfer(ORClass *) $1;
                 [occlass.methods addObject:imp];
+                $$ = _vretained occlass;
+            }
+            | class_implementation comment_statement
+            {
+                // 注释出现在类实现中，仅返回原始对象，不添加到类的方法列表
+                ORClass *occlass = _transfer(ORClass *) $1;
+                // 不要将注释添加到methods数组中，因为类型不匹配
+                // 注释需要单独处理
                 $$ = _vretained occlass;
             }
             | class_implementation global_define
@@ -687,6 +713,12 @@ function_implementation:
             $$ = _vretained imp;
         }
         | function_implementation control_statement
+        {
+            ORScopeImp *imp = _transfer(ORScopeImp *)$1;
+            [imp addStatements:_transfer(id) $2];
+            $$ = _vretained imp;
+        }
+        | function_implementation comment_statement
         {
             ORScopeImp *imp = _transfer(ORScopeImp *)$1;
             [imp addStatements:_transfer(id) $2];

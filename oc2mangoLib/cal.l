@@ -42,6 +42,47 @@
         return (int)len;
     }
 
+    // 注释收集缓冲区
+    static char *comment_buffer = NULL;
+    static size_t comment_buffer_size = 0;
+    static size_t comment_buffer_capacity = 0;
+
+    // 初始化注释收集缓冲区
+    static void startCommentBuffer(void) {
+        comment_buffer_size = 0;
+        if (comment_buffer == NULL) {
+            comment_buffer_capacity = 1024;
+            comment_buffer = (char *)malloc(comment_buffer_capacity);
+        }
+        comment_buffer[0] = '\0';
+    }
+
+    // 向注释缓冲区添加字符
+    static void commentBufferAppendCharacter(char c) {
+        if (comment_buffer_size + 1 >= comment_buffer_capacity) {
+            comment_buffer_capacity *= 2;
+            comment_buffer = (char *)realloc(comment_buffer, comment_buffer_capacity);
+        }
+        comment_buffer[comment_buffer_size++] = c;
+        comment_buffer[comment_buffer_size] = '\0';
+    }
+
+    // 向注释缓冲区添加字符串
+    static void commentBufferAppendString(const char *str) {
+        size_t len = strlen(str);
+        if (comment_buffer_size + len + 1 >= comment_buffer_capacity) {
+            comment_buffer_capacity = larger(comment_buffer_capacity * 2, comment_buffer_size + len + 1);
+            comment_buffer = (char *)realloc(comment_buffer, comment_buffer_capacity);
+        }
+        strcpy(comment_buffer + comment_buffer_size, str);
+        comment_buffer_size += len;
+    }
+
+    // 获取并清空注释缓冲区
+    static char *endCommentBuffer(void) {
+        return comment_buffer;
+    }
+
 %}
 
 %start C_COMMENT CC_COMMENT STRING_LITERAL_STATE POUNDKEY CHILD_COLLECTION_STATE POINT_STATE PROTOCOL_CHECK POINT_CHECK ASSING_POINT_CHECK
@@ -310,19 +351,49 @@ BEGIN STRING_LITERAL_STATE;
 <INITIAL>[\t] ;
 <INITIAL>[\n] ;
 
-<INITIAL>"/*" {  BEGIN C_COMMENT; }
-<INITIAL>"//" {  BEGIN CC_COMMENT; }
-<INITIAL>. ;
+<INITIAL>"/*" {  
+    startCommentBuffer();
+    commentBufferAppendString("/*");
+    BEGIN C_COMMENT; 
+}
+<INITIAL>"//" {  
+    startCommentBuffer();
+    commentBufferAppendString("//");
+    BEGIN CC_COMMENT; 
+}
 
-<C_COMMENT>\n;
-<C_COMMENT>. ;
-<C_COMMENT>"*/"    { yycolumn = 0; BEGIN INITIAL; }
+<C_COMMENT>\n {
+    commentBufferAppendCharacter('\n');
+}
+<C_COMMENT>. {
+    commentBufferAppendCharacter(yytext[0]);
+}
+<C_COMMENT>"*/"    { 
+    commentBufferAppendString("*/");
+    yycolumn = 0; 
+    NSString *commentStr = [NSString stringWithUTF8String:endCommentBuffer()];
+    yylval.identifier = (__bridge_retained void *)commentStr;
+    BEGIN INITIAL; 
+    return COMMENT_BLOCK;
+}
 <C_COMMENT><<EOF>>   ;
 
-<CC_COMMENT>.    ;
-<CC_COMMENT>\n     { yycolumn = 0; BEGIN INITIAL; }
-<CC_COMMENT><<EOF>> { BEGIN INITIAL; }
-
+<CC_COMMENT>. {
+    commentBufferAppendCharacter(yytext[0]);
+}
+<CC_COMMENT>\n { 
+    yycolumn = 0; 
+    NSString *commentStr = [NSString stringWithUTF8String:endCommentBuffer()];
+    yylval.identifier = (__bridge_retained void *)commentStr;
+    BEGIN INITIAL; 
+    return COMMENT_LINE;
+}
+<CC_COMMENT><<EOF>> { 
+    NSString *commentStr = [NSString stringWithUTF8String:endCommentBuffer()];
+    yylval.identifier = (__bridge_retained void *)commentStr;
+    BEGIN INITIAL; 
+    return COMMENT_LINE;
+}
 
 <STRING_LITERAL_STATE>\" {
     BEGIN  INITIAL;
@@ -345,4 +416,6 @@ BEGIN STRING_LITERAL_STATE;
     if(strlen(linebuf) > 0) yycolumn = 0;
     yyless(1);
 }
+
+<INITIAL>. ;
 %%

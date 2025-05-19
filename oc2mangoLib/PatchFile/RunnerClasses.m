@@ -17,6 +17,9 @@
 }
 @end
 
+@implementation ORComment
+@end
+
 @implementation ORTypeSpecial
 + (instancetype)specialWithType:(TypeKind)type name:(NSString *)name{
     ORTypeSpecial *s = [ORTypeSpecial new];
