@@ -1,0 +1,580 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		11FBFC83E85A3BDE77BFC9784B81803B /* MakeDeclare.m in Sources */ = {isa = PBXBuildFile; fileRef = 25B024C17AE9AAEB0A785FCCF7568AC5 /* MakeDeclare.m */; };
+		2F269240FA23D1A90483CBF2675EE59E /* Convert.h in Headers */ = {isa = PBXBuildFile; fileRef = 7EEEE903C709F2C5E18A09D1734437F0 /* Convert.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		32DD58BBFADC747D28E0E64E5021293C /* MakeDeclare.h in Headers */ = {isa = PBXBuildFile; fileRef = 011505F668E40BF945333B30D53F9B64 /* MakeDeclare.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		386D9DC6AB855EE18423C8F7CC140E7A /* Pods-oc2script-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BD130973F41CB6A51E92FBD07DB4E50 /* Pods-oc2script-dummy.m */; };
+		3F287401CD244CD0DEFD0FDAFC6D683D /* oc2scriptLib-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 88827177CAD9C05B6FED76049BDC0680 /* oc2scriptLib-dummy.m */; };
+		406D99C37E7E53C3E7921671B5E70561 /* RunnerClasses.m in Sources */ = {isa = PBXBuildFile; fileRef = 616EAC1AA66F4636F8E01C44882C097A /* RunnerClasses.m */; };
+		6C34025B5D7C29EDB0C40A4A1626E46B /* RunnerClasses.h in Headers */ = {isa = PBXBuildFile; fileRef = 687D0C421B5F0C30CBD94FC666D48CA2 /* RunnerClasses.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		721E0AD5D9505978DD7B80147F43F60C /* Convert.m in Sources */ = {isa = PBXBuildFile; fileRef = 25D30644220A4651483E0D4079027957 /* Convert.m */; };
+		89D42CCA2643405C94C6C8994789E93B /* Parser.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6438E2560389E638751583E6AAFF0C /* Parser.m */; };
+		9034FF86CE83D4B978978F7BF8F437E1 /* cal.y in Sources */ = {isa = PBXBuildFile; fileRef = 9584CD1631F42D84C0C5164D602B9289 /* cal.y */; };
+		AA8E7584B5F6599666A2DF39D03B7272 /* Parser.h in Headers */ = {isa = PBXBuildFile; fileRef = 0DD02644C285F292202236EB35EE1D65 /* Parser.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		BD4FCA166586053BDAD5487EC78AF3D1 /* cal.l in Sources */ = {isa = PBXBuildFile; fileRef = A660BF5330BE047FCFB25771B4C9FF0E /* cal.l */; };
+		C109908C02365AE8232E989B0C9DE9A0 /* AST.h in Headers */ = {isa = PBXBuildFile; fileRef = E94066372B583E1C6D0C2F01DC366775 /* AST.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		C12505B36CDDF44E3C41F920B17140CB /* AST.m in Sources */ = {isa = PBXBuildFile; fileRef = AF23A7F05EE1119639C94B4F8BA322F6 /* AST.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		847515DCFD21FE59FC584E28F53BBC87 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C4DA49FE898012C8200AC4B214E6A8C4;
+			remoteInfo = oc2scriptLib;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		011505F668E40BF945333B30D53F9B64 /* MakeDeclare.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MakeDeclare.h; path = oc2scriptLib/Classes/MakeDeclare.h; sourceTree = "<group>"; };
+		0C31DF01D3A1EBD53E2259A253DB13F5 /* oc2scriptLib.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = oc2scriptLib.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		0DD02644C285F292202236EB35EE1D65 /* Parser.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Parser.h; path = oc2scriptLib/Classes/Parser.h; sourceTree = "<group>"; };
+		0ED2881C3C532FFA5DD3DAE3F8BA84B4 /* Pods-oc2script-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-oc2script-acknowledgements.plist"; sourceTree = "<group>"; };
+		25B024C17AE9AAEB0A785FCCF7568AC5 /* MakeDeclare.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MakeDeclare.m; path = oc2scriptLib/Classes/MakeDeclare.m; sourceTree = "<group>"; };
+		25D30644220A4651483E0D4079027957 /* Convert.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = Convert.m; path = oc2scriptLib/Classes/Convert.m; sourceTree = "<group>"; };
+		5044EE59A59B6AC5E36405FB9ED681F5 /* Pods-oc2script */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "Pods-oc2script"; path = "libPods-oc2script.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		616EAC1AA66F4636F8E01C44882C097A /* RunnerClasses.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RunnerClasses.m; sourceTree = "<group>"; };
+		687D0C421B5F0C30CBD94FC666D48CA2 /* RunnerClasses.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RunnerClasses.h; sourceTree = "<group>"; };
+		6A6438E2560389E638751583E6AAFF0C /* Parser.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = Parser.m; path = oc2scriptLib/Classes/Parser.m; sourceTree = "<group>"; };
+		73E6B262E204EBB1F364C759944EA539 /* oc2scriptLib */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = oc2scriptLib; path = liboc2scriptLib.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		7822D730BF87C0655D6145781FEBF2BB /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		7EEEE903C709F2C5E18A09D1734437F0 /* Convert.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Convert.h; path = oc2scriptLib/Classes/Convert.h; sourceTree = "<group>"; };
+		88827177CAD9C05B6FED76049BDC0680 /* oc2scriptLib-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "oc2scriptLib-dummy.m"; sourceTree = "<group>"; };
+		9584CD1631F42D84C0C5164D602B9289 /* cal.y */ = {isa = PBXFileReference; includeInIndex = 1; name = cal.y; path = oc2scriptLib/Classes/cal.y; sourceTree = "<group>"; };
+		961765CC8AC509C10D67C9FF86D4EEC3 /* Pods-oc2script.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-oc2script.release.xcconfig"; sourceTree = "<group>"; };
+		9BD130973F41CB6A51E92FBD07DB4E50 /* Pods-oc2script-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-oc2script-dummy.m"; sourceTree = "<group>"; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		A3DE3241DA59F6F9A420D6F8BBCC02B8 /* Pods-oc2script.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-oc2script.debug.xcconfig"; sourceTree = "<group>"; };
+		A660BF5330BE047FCFB25771B4C9FF0E /* cal.l */ = {isa = PBXFileReference; includeInIndex = 1; name = cal.l; path = oc2scriptLib/Classes/cal.l; sourceTree = "<group>"; };
+		ACBB0DA62DB4024EDB4F07ACCA5D7340 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		AF23A7F05EE1119639C94B4F8BA322F6 /* AST.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AST.m; path = oc2scriptLib/Classes/AST.m; sourceTree = "<group>"; };
+		CCA7C535C58C63FC5DA5CBD44D10257C /* oc2scriptLib-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "oc2scriptLib-prefix.pch"; sourceTree = "<group>"; };
+		D658C1E67F14E49E334F8C1340C88DCF /* oc2scriptLib.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = oc2scriptLib.release.xcconfig; sourceTree = "<group>"; };
+		E7B3BA11CDEEC6330F43FC1A0D282BE7 /* Pods-oc2script-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-oc2script-acknowledgements.markdown"; sourceTree = "<group>"; };
+		E94066372B583E1C6D0C2F01DC366775 /* AST.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AST.h; path = oc2scriptLib/Classes/AST.h; sourceTree = "<group>"; };
+		EB55DE0549FACDCF040E4C08175C2D72 /* oc2scriptLib.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = oc2scriptLib.debug.xcconfig; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		478E3739A4A368A01C9A40C34EFBE627 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EBBBA781DDF989D920505B3F411BC678 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		737A2CFDEFE08870D42C671F939BFA82 /* oc2scriptLib */ = {
+			isa = PBXGroup;
+			children = (
+				E94066372B583E1C6D0C2F01DC366775 /* AST.h */,
+				AF23A7F05EE1119639C94B4F8BA322F6 /* AST.m */,
+				A660BF5330BE047FCFB25771B4C9FF0E /* cal.l */,
+				9584CD1631F42D84C0C5164D602B9289 /* cal.y */,
+				7EEEE903C709F2C5E18A09D1734437F0 /* Convert.h */,
+				25D30644220A4651483E0D4079027957 /* Convert.m */,
+				011505F668E40BF945333B30D53F9B64 /* MakeDeclare.h */,
+				25B024C17AE9AAEB0A785FCCF7568AC5 /* MakeDeclare.m */,
+				0DD02644C285F292202236EB35EE1D65 /* Parser.h */,
+				6A6438E2560389E638751583E6AAFF0C /* Parser.m */,
+				C6191450EBD3E15755B94A435DA3D723 /* PatchFile */,
+				CF40AFCE289A6DB38C4E44C9B9BA65D0 /* Pod */,
+				90ACF3409D07D8F912A0F7FEC996AB27 /* Support Files */,
+			);
+			name = oc2scriptLib;
+			path = ../oc2scriptLib;
+			sourceTree = "<group>";
+		};
+		791D622CC58A57AAE4C6A7B6536FF8EC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				73E6B262E204EBB1F364C759944EA539 /* oc2scriptLib */,
+				5044EE59A59B6AC5E36405FB9ED681F5 /* Pods-oc2script */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		90ACF3409D07D8F912A0F7FEC996AB27 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				88827177CAD9C05B6FED76049BDC0680 /* oc2scriptLib-dummy.m */,
+				CCA7C535C58C63FC5DA5CBD44D10257C /* oc2scriptLib-prefix.pch */,
+				EB55DE0549FACDCF040E4C08175C2D72 /* oc2scriptLib.debug.xcconfig */,
+				D658C1E67F14E49E334F8C1340C88DCF /* oc2scriptLib.release.xcconfig */,
+			);
+			name = "Support Files";
+			path = "../Pods/Target Support Files/oc2scriptLib";
+			sourceTree = "<group>";
+		};
+		92513A33204887072D8088BF30CC0ADA /* Development Pods */ = {
+			isa = PBXGroup;
+			children = (
+				737A2CFDEFE08870D42C671F939BFA82 /* oc2scriptLib */,
+			);
+			name = "Development Pods";
+			sourceTree = "<group>";
+		};
+		9E05F53E8BF4C96EE842407F463A21FC /* Pods-oc2script */ = {
+			isa = PBXGroup;
+			children = (
+				E7B3BA11CDEEC6330F43FC1A0D282BE7 /* Pods-oc2script-acknowledgements.markdown */,
+				0ED2881C3C532FFA5DD3DAE3F8BA84B4 /* Pods-oc2script-acknowledgements.plist */,
+				9BD130973F41CB6A51E92FBD07DB4E50 /* Pods-oc2script-dummy.m */,
+				A3DE3241DA59F6F9A420D6F8BBCC02B8 /* Pods-oc2script.debug.xcconfig */,
+				961765CC8AC509C10D67C9FF86D4EEC3 /* Pods-oc2script.release.xcconfig */,
+			);
+			name = "Pods-oc2script";
+			path = "Target Support Files/Pods-oc2script";
+			sourceTree = "<group>";
+		};
+		C6191450EBD3E15755B94A435DA3D723 /* PatchFile */ = {
+			isa = PBXGroup;
+			children = (
+				687D0C421B5F0C30CBD94FC666D48CA2 /* RunnerClasses.h */,
+				616EAC1AA66F4636F8E01C44882C097A /* RunnerClasses.m */,
+			);
+			name = PatchFile;
+			path = oc2scriptLib/Classes/PatchFile;
+			sourceTree = "<group>";
+		};
+		CF1408CF629C7361332E53B88F7BD30C = {
+			isa = PBXGroup;
+			children = (
+				9D940727FF8FB9C785EB98E56350EF41 /* Podfile */,
+				92513A33204887072D8088BF30CC0ADA /* Development Pods */,
+				D89477F20FB1DE18A04690586D7808C4 /* Frameworks */,
+				791D622CC58A57AAE4C6A7B6536FF8EC /* Products */,
+				FE10EDC79D7595E5996A410A928DF460 /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		CF40AFCE289A6DB38C4E44C9B9BA65D0 /* Pod */ = {
+			isa = PBXGroup;
+			children = (
+				ACBB0DA62DB4024EDB4F07ACCA5D7340 /* LICENSE */,
+				0C31DF01D3A1EBD53E2259A253DB13F5 /* oc2scriptLib.podspec */,
+				7822D730BF87C0655D6145781FEBF2BB /* README.md */,
+			);
+			name = Pod;
+			sourceTree = "<group>";
+		};
+		D89477F20FB1DE18A04690586D7808C4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		FE10EDC79D7595E5996A410A928DF460 /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				9E05F53E8BF4C96EE842407F463A21FC /* Pods-oc2script */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		5279BED9A33A5B8DBA73DD6AA30F8AA0 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA49293E1DD10C0374200137E53FD191 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C109908C02365AE8232E989B0C9DE9A0 /* AST.h in Headers */,
+				2F269240FA23D1A90483CBF2675EE59E /* Convert.h in Headers */,
+				32DD58BBFADC747D28E0E64E5021293C /* MakeDeclare.h in Headers */,
+				AA8E7584B5F6599666A2DF39D03B7272 /* Parser.h in Headers */,
+				6C34025B5D7C29EDB0C40A4A1626E46B /* RunnerClasses.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		BDC0BFD54BCCA42E104823EB76B254BC /* Pods-oc2script */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 55FC84FF1267AC91959DBA6AA86DF72D /* Build configuration list for PBXNativeTarget "Pods-oc2script" */;
+			buildPhases = (
+				5279BED9A33A5B8DBA73DD6AA30F8AA0 /* Headers */,
+				EB42A0BBB9CDA1F3114B10C9FE7515DC /* Sources */,
+				EBBBA781DDF989D920505B3F411BC678 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				03FA4EFB239578CB63CE5C94C514857E /* PBXTargetDependency */,
+			);
+			name = "Pods-oc2script";
+			productName = "Pods-oc2script";
+			productReference = 5044EE59A59B6AC5E36405FB9ED681F5 /* Pods-oc2script */;
+			productType = "com.apple.product-type.library.static";
+		};
+		C4DA49FE898012C8200AC4B214E6A8C4 /* oc2scriptLib */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AE553F9CF1BB8F6EEF80016D82E0FCCC /* Build configuration list for PBXNativeTarget "oc2scriptLib" */;
+			buildPhases = (
+				CA49293E1DD10C0374200137E53FD191 /* Headers */,
+				198BCF8D38CD91FEFED8382F800E26D3 /* Sources */,
+				478E3739A4A368A01C9A40C34EFBE627 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = oc2scriptLib;
+			productName = oc2scriptLib;
+			productReference = 73E6B262E204EBB1F364C759944EA539 /* oc2scriptLib */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BFDFE7DC352907FC980B868725387E98 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+			};
+			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
+			compatibilityVersion = "Xcode 16.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
+			minimizedProjectReferenceProxies = 0;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 791D622CC58A57AAE4C6A7B6536FF8EC /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C4DA49FE898012C8200AC4B214E6A8C4 /* oc2scriptLib */,
+				BDC0BFD54BCCA42E104823EB76B254BC /* Pods-oc2script */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		198BCF8D38CD91FEFED8382F800E26D3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C12505B36CDDF44E3C41F920B17140CB /* AST.m in Sources */,
+				BD4FCA166586053BDAD5487EC78AF3D1 /* cal.l in Sources */,
+				9034FF86CE83D4B978978F7BF8F437E1 /* cal.y in Sources */,
+				721E0AD5D9505978DD7B80147F43F60C /* Convert.m in Sources */,
+				11FBFC83E85A3BDE77BFC9784B81803B /* MakeDeclare.m in Sources */,
+				3F287401CD244CD0DEFD0FDAFC6D683D /* oc2scriptLib-dummy.m in Sources */,
+				89D42CCA2643405C94C6C8994789E93B /* Parser.m in Sources */,
+				406D99C37E7E53C3E7921671B5E70561 /* RunnerClasses.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EB42A0BBB9CDA1F3114B10C9FE7515DC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				386D9DC6AB855EE18423C8F7CC140E7A /* Pods-oc2script-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		03FA4EFB239578CB63CE5C94C514857E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = oc2scriptLib;
+			target = C4DA49FE898012C8200AC4B214E6A8C4 /* oc2scriptLib */;
+			targetProxy = 847515DCFD21FE59FC584E28F53BBC87 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		16F47885BDB624167402BDC61CC6CD40 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 961765CC8AC509C10D67C9FF86D4EEC3 /* Pods-oc2script.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				EXECUTABLE_PREFIX = lib;
+				MACH_O_TYPE = staticlib;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		930E226C21F64A571D1CB76E18AB1F7D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_RELEASE=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Release;
+		};
+		99AB7B25B250F57A79C50EE689FB9A85 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D658C1E67F14E49E334F8C1340C88DCF /* oc2scriptLib.release.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				EXECUTABLE_PREFIX = lib;
+				GCC_PREFIX_HEADER = "Target Support Files/oc2scriptLib/oc2scriptLib-prefix.pch";
+				GENERATE_INFOPLIST_FILE = NO;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = oc2scriptLib;
+				PRODUCT_NAME = oc2scriptLib;
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+			};
+			name = Release;
+		};
+		AF2FA4B5C4B04A061CAC504DC94BE4C9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A3DE3241DA59F6F9A420D6F8BBCC02B8 /* Pods-oc2script.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				EXECUTABLE_PREFIX = lib;
+				MACH_O_TYPE = staticlib;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		B71873917D0ED6E1C976C88704C05BF3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_DEBUG=1",
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Debug;
+		};
+		BCF517BE3218C21E94313E0A9F4448A2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = EB55DE0549FACDCF040E4C08175C2D72 /* oc2scriptLib.debug.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				EXECUTABLE_PREFIX = lib;
+				GCC_PREFIX_HEADER = "Target Support Files/oc2scriptLib/oc2scriptLib-prefix.pch";
+				GENERATE_INFOPLIST_FILE = NO;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = oc2scriptLib;
+				PRODUCT_NAME = oc2scriptLib;
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B71873917D0ED6E1C976C88704C05BF3 /* Debug */,
+				930E226C21F64A571D1CB76E18AB1F7D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		55FC84FF1267AC91959DBA6AA86DF72D /* Build configuration list for PBXNativeTarget "Pods-oc2script" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AF2FA4B5C4B04A061CAC504DC94BE4C9 /* Debug */,
+				16F47885BDB624167402BDC61CC6CD40 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AE553F9CF1BB8F6EEF80016D82E0FCCC /* Build configuration list for PBXNativeTarget "oc2scriptLib" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BCF517BE3218C21E94313E0A9F4448A2 /* Debug */,
+				99AB7B25B250F57A79C50EE689FB9A85 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+}

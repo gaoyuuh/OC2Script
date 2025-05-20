@@ -1,0 +1,16 @@
+PODS:
+  - oc2scriptLib (0.1.0)
+
+DEPENDENCIES:
+  - oc2scriptLib (from `./oc2scriptLib`)
+
+EXTERNAL SOURCES:
+  oc2scriptLib:
+    :path: "./oc2scriptLib"
+
+SPEC CHECKSUMS:
+  oc2scriptLib: 51b5716ad0c26348bee4b293e7e77e2c1345259b
+
+PODFILE CHECKSUM: 0bfd84d1ce0b1f1f6af5a1b8a249ad89a2460aa3
+
+COCOAPODS: 1.16.2
