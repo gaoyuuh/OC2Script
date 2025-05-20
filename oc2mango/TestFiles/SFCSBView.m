@@ -136,6 +136,9 @@
     
     NSArray *ary = @[@1, @2, @3];
     for (NSNumber *item in ary) {
+        if ([item intValue] == 1) {
+            break;
+        }
     }
     
     id number = ary[1];

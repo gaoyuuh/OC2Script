@@ -74,15 +74,15 @@ class native SFCSBView: UIView {
         } else {
             NSLog("a == 3");
         }
-        while(a < 10){
+        while (a < 10) {
             NSLog("a < 10");
             a = a + 1;
         }
-        do{
+        do {
             NSLog("a < 10");
             a = a + 1;
-        }while(a < 10);
-        for (var i = 0; i < 10; i = i + 1){
+        } while (a < 10);
+        for (var i = 0; i < 10; i = i + 1) {
             NSLog("%@", i);
             if (i == 0) {
                 continue;
@@ -103,6 +103,9 @@ class native SFCSBView: UIView {
         var ary = NSArray.arrayWithObjects_(1, 2, 3, nil);
         for (var i = 0; i < ary.count; i = i + 1) {
             var item = ary.objectAtIndex_(i)
+            if (item.intValue() == 1) {
+                break;
+            }
         }
         var number = ary.objectAtIndex_(1);
         var dic = NSDictionary.dictionaryWithObjectsAndKeys_("value", "key", "value1", "key1", nil);

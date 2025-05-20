@@ -7,11 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "MakeDeclare.h"
+
 NS_ASSUME_NONNULL_BEGIN
+
 @interface Convert : NSObject
 
 - (NSString *)convert:(id)node;
 
 @end
+
 NS_ASSUME_NONNULL_END
