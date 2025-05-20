@@ -127,10 +127,26 @@
         [content appendFormat:@" <%@>",[occlass.protocols componentsJoinedByString:@", "]];
     }
     [content appendString:@" {\n"];
+    
+    // 处理类中的方法，添加适当缩进
     for (ORMethodImplementation *imp in occlass.methods) {
-        [content appendString:[self convertMethodImp:imp]];
+        // 每个方法前都添加一个空行
+        [content appendString:@"\n"];
+        
+        // 获取方法转换后的字符串
+        NSString *methodStr = [self convertMethodImp:imp];
+        
+        // 对方法的每一行添加缩进
+        NSArray *lines = [methodStr componentsSeparatedByString:@"\n"];
+        for (NSString *line in lines) {
+            if (line.length > 0) {
+                // 为每一行添加4个空格缩进
+                [content appendFormat:@"    %@\n", line];
+            }
+        }
     }
-    [content appendString:@"\n}\n"];
+    
+    [content appendString:@"}\n"];
     return content;
 }
 
@@ -188,11 +204,14 @@
     NSMutableString *result = [NSMutableString string];
     ORMethodDeclare *declare = methodImp.declare;
     
+    // 只添加换行，不添加缩进
+    [result appendString:@"\n"];
+    
     // 根据是否是类方法添加适当的关键字
     if (declare.isClassMethod) {
-        [result appendString:@"\nstatic function "];
+        [result appendString:@"static function "];
     } else {
-        [result appendString:@"\nfunction "];
+        [result appendString:@"function "];
     }
     
     // 处理方法名：根据是否有参数决定是否添加下划线
@@ -251,15 +270,22 @@ int indentationCont = 0;
     indentationCont++;
     [content appendString:@"{\n"];
     NSMutableString *tabs = [@"" mutableCopy];
-    for (int i = 0; i < indentationCont - 1; i++) {
+    for (int i = 0; i < indentationCont; i++) {
         [tabs appendString:@"    "];
     }
     for (id statement in imp.statements) {
         if ([statement isKindOfClass:[ORNode class]]) {
-            [content appendFormat:@"%@    %@\n",tabs,[self convert:statement]];
+            [content appendFormat:@"%@%@\n",tabs,[self convert:statement]];
         }
     }
-    [content appendFormat:@"%@}",tabs];
+    
+    // 为右大括号添加适当的缩进
+    NSMutableString *closeBraceTabs = [@"" mutableCopy];
+    for (int i = 0; i < indentationCont - 1; i++) {
+        [closeBraceTabs appendString:@"    "];
+    }
+    [content appendFormat:@"%@}",closeBraceTabs];
+    
     indentationCont--;
     return content;
 }
